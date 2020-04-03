@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Home" controller="Home" action="Index">
+    <mvcSiteMapNode title="MainCategory" controller="Category" action="MainCategoryContent" dynamicNodeProvider ="Sklep_internetowy.Infrastructure.MainCategoryDynamicNodeProvider, Sklep internetowy">
+      <mvcSiteMapNode title="Category" controller="Category" action="CategoryContent" dynamicNodeProvider ="Sklep_internetowy.Infrastructure.CategoryDynamicNodeProvider, Sklep internetowy">
+        <mvcSiteMapNode title="Product" controller="Product" action="ProductDetails" dynamicNodeProvider ="Sklep_internetowy.Infrastructure.ProductDynamicNodeProvider, Sklep internetowy"/>
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>
+  </mvcSiteMapNode>
+
+
+
+
+</mvcSiteMap>

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Sklep_internetowy.Models.Product>
+@using Sklep_internetowy.Infrastructure
+
+@{
+    ViewBag.Title = "BestsellerContent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Internetowy Sklep Jeździecki - Radosny Koń";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-3">
+            @Html.Action("MainCategoriesMenu")        
+        </div>
+
+
+        <!-- /.col-lg-3 -->
+
+        <div class="col-lg-9" style="padding-top: 10px;">
+
+            <div class="row">
+                @foreach (var i in Model)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100" style="position: relative;">
+                            <a href="#">
+                                <img class="card-img-top" src="@Url.GraphicsFilePath(i.GraphicFileName)" alt="">
+
+                                <div class="product-label" style="position: absolute; right: 10px; top:10px;">
+                                    <span class="bestseller-product-icon" style="background-color:#e27c7c; text-align:center; display:block; padding: 10px; font-size:14px; font-weight:700; color:#fff;">BESTSELLER</span>
+                                </div>
+                            </a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="#">@i.Brand.brand, @i.Name</a>
+                                </h4>
+                                <h5>@i.Price zł</h5>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <!-- /.row -->
+
+        </div>
+        <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->

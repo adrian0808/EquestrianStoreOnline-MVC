@@ -1,0 +1,118 @@
+﻿@model IEnumerable<Sklep_internetowy.Models.Product>
+@using Sklep_internetowy.Infrastructure
+
+@{
+    ViewBag.Title = "MainCategoryContent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-3">
+            @Html.Action("MainCategoriesMenu")
+            <br /><br />
+            @Html.Action("CategoriesMenu")
+        </div>
+
+
+        <!-- /.col-lg-3 -->
+
+        <div class="col-lg-9" style="padding-top: 10px;">
+            <div style=" position:relative; top:40px; border-style: groove;">
+                @Html.MvcSiteMap().SiteMapPath()
+            </div>
+
+            <br></br>
+            
+            @using (Html.BeginForm())
+            {
+                <p>
+                    Find by name: @Html.TextBox("searchTerm")
+                    <input type="submit" value="Search" />
+                </p>
+            }
+
+            <div class="row" id="myRow " style="padding-top:70px;">
+                @foreach (var i in Model)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100" style="position: relative;">
+                            <a href="@Url.Action("ProductDetails", "Product", new { id = i.ProductId })">
+                                <img class="card-img-top" src="@Url.GraphicsFilePath(i.GraphicFileName)" alt="">
+                                @if (i.isBestseller)
+                                {
+                                    <div class="product-label" style="position: absolute; right: 10px; top:10px;">
+                                        <span class="bestseller-product-icon" style="background-color:#e27c7c; text-align:center; display:block; padding: 10px; font-size:14px; font-weight:700; color:#fff;">BESTSELLER</span>
+                                    </div>
+                                }
+                            </a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="@Url.Action("ProductDetails", "Product", new { id = i.ProductId })">@i.Brand.brand, @i.Name</a>
+                                </h4>
+                                <h5>@i.Price zł</h5>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <!-- /.row -->
+
+        </div>
+        <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+@section Scripts
+{
+    @System.Web.Optimization.Scripts.Render("~/bundles/JqueryAndJqueryui")
+}
+
+<script>
+        $(function () {
+            var setupAutoComplete = function () {
+                var $input = $(this);
+                var options =
+                    {
+                        source: $input.attr("data-autocomplete-source"),
+                        select: function (event, ui) {
+                            $input = $(this);
+                            $input.val(ui.item.label);
+                            var $form = $input.parents("form:first");
+                            $form.submit();
+                        }
+                    };
+                $input.autocomplete(options);
+            };
+
+            var ajaxSubmit = function () {
+                var $form = $(this);
+                var settings = {
+                    data: $(this).serialize(),
+                    url: $(this).attr("action"),
+                    type: $(this).attr("method")
+                };
+                $.ajax(settings).done(function (result) {
+                    var $targetElement = $($form.data("ajax-target"));
+                    var $newContent = $(result);
+                    $($targetElement).replaceWith($newContent);
+                    $newContent.effect("slide");
+                });
+                return false;
+            };
+            $("#search-filter").each(setupAutoComplete);
+            $("#search-form").submit(ajaxSubmit);
+        });
+</script>
+

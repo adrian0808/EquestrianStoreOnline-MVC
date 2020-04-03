@@ -1,0 +1,21 @@
+/*!
+ * Start Bootstrap - Shop Homepage (https://startbootstrap.com/template-overviews/shop-homepage)
+ * Copyright 2013-2019 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-shop-homepage/blob/master/LICENSE)
+ */
+body {
+  padding-top: 56px;
+}
+
+.product-options dd select {
+    width: 100%;
+}
+
+select {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 2px 8px;
+    height: 26px;
+    color: #777;
+    font-size: 13px;
+}

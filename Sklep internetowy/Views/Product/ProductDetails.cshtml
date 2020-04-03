@@ -1,0 +1,120 @@
+﻿@model Sklep_internetowy.View.ProductViewModel
+@using Sklep_internetowy.Infrastructure
+
+@{
+    ViewBag.Title = "MainCategoryContent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Internetowy Sklep Jeździecki - Radosny Koń";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    function disable() {
+        document.getElementById("colors").disabled = true;
+    }
+
+    function enable() {
+        document.getElementById("colors").disabled = false;
+    }
+    function validation() {
+
+        var tmp = document.getElementById("sizes");
+        var selectedValue = tmp.options[tmp.selectedIndex].value;
+        if (selectedValue == "primary") {
+            disable();
+        }
+        else {
+            enable();
+        }
+
+    }
+
+</script>
+
+<!-- Page Content -->
+<div class="container" onchange="validation()">
+    
+    <div class="row">
+
+        <div class="col-lg-3">
+            @Html.Action("MainCategoriesMenu")
+            <br /><br />
+            @Html.Action("CategoriesMenu")
+        </div>
+
+
+        <!-- /.col-lg-3 -->
+       
+        <div class="col-lg-9" style="padding-top: 10px;">
+            <div style=" position:relative; top:40px; border-style: groove;">
+                @Html.MvcSiteMap().SiteMapPath()
+            </div>
+            <div class="row" style="padding-top:70px;">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100" style="position: relative;">
+                        <a href="#">
+                            <img class="card-img-top" src="@Url.GraphicsFilePath(Model.Product.GraphicFileName)" alt="">
+                        </a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#"></a>
+                            </h4>
+                            <h5></h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100" style="position: relative;">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                @Model.Product.Name
+                            </h4>
+                            <h3>@Model.Product.Price zł</h3>
+                         
+                          
+                                <label>Rozmiar</label>
+                                <div class="input-box" style="position: relative;">
+                                    <select id="sizes" name="sizeName">
+                                        <option value="primary">Wybierz opcję...</option>
+                                        @foreach (var i in Model.productVariants)
+                                        {
+                                            <option value="@i.Size.size">@i.Size.size</option>
+                                        }
+                                    </select>
+                                </div>
+                                <br />
+                            
+
+                            <label>Kolor</label>
+                            <div class="input-box" style="position: relative;">
+                                <select id="colors" name="colorName">
+                                    <option value="">Wybierz opcję...</option>
+                                    @foreach (var i in Model.productVariants)
+                                    {
+                                        <option value="@i.ProductId">@i.Color.color</option>
+                                    }
+                                </select>
+                            </div>
+                            <br />
+                            <h7>Opis: @Model.Product.Description</h7>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- /.row -->
+
+        </div>
+        <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->
+<script>validation();</script>

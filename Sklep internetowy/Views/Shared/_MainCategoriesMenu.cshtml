@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Sklep_internetowy.Models.MainCategory>
+
+<h1 class="my-4">Radosny Koń</h1>
+<div class="list-group">
+    @foreach (var i in Model)
+    {
+        <a href="@Url.Action("MainCategoryContent", "Category", new { idMainCategory = i.MainCategoryId})" , class="list-group-item">@i.Name.ToUpper()</a>
+    }
+    <a href="@Url.Action("BestsellerContent", "Category")" , class="list-group-item">BESTSELLERY</a>
+    <a href="@Url.Action("CategoryContent", "Category")" , class="list-group-item">PROMOCJE</a>
+    <a href="@Url.Action("CategoryContent", "Category")" , class="list-group-item">NOWOŚCI</a>
+</div>
+
+<!-- /.col-lg-3 -->

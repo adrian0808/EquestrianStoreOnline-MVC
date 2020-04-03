@@ -1,0 +1,10 @@
+﻿@model IEnumerable<Sklep_internetowy.Models.Category>
+
+<div class="list-group">
+    @foreach (var i in Model)
+    {
+        <a href="@Url.Action("CategoryContent", "Category", new { idCategory = i.CategoryId, idMainCategory = i.MainCategoryId})" , class="list-group-item">@i.Name.ToUpper()</a>
+    }
+</div>
+
+<!-- /.col-lg-3 -->

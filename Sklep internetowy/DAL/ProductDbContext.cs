@@ -1,0 +1,59 @@
+namespace Sklep_internetowy
+{
+    using Sklep_internetowy.Models;
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.ModelConfiguration.Conventions;
+    using System.Linq;
+
+
+    public class ProductDbContext : DbContext, IProductDbContext
+    {
+
+       
+        public ProductDbContext()
+            : base("name=ProductDbContext")
+        { }
+
+
+
+        static ProductDbContext()
+        {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProductDbContext, Sklep_internetowy.Migrations.Configuration>());
+        }
+
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            //Usuniecie konwencji dodawania 's' jako liczby mnogiej dla nazwy kazdej tabeli
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        }
+
+        public IDbSet<Product> Products { get; set; }
+        public IDbSet<Category> Categories { get; set; }
+        public IDbSet<MainCategory> MainCategories { get; set; }
+        public IDbSet<Stock> Stocks { get; set; }
+        public IDbSet<Color> Colors { get; set; }
+        public IDbSet<Size> Sizes { get; set; }
+        public IDbSet<Brand> Brands { get; set; }
+        public IDbSet<Gender> Genders { get; set; }
+        public IDbSet<ProductVariant> ProductsVariant { get; set; }
+    }
+
+    public interface IProductDbContext
+    {
+
+        IDbSet<Product> Products { get; }
+        IDbSet<Category> Categories { get; }
+        IDbSet<MainCategory> MainCategories { get; }
+        IDbSet<Stock> Stocks { get; }
+        IDbSet<Color> Colors { get; }
+        IDbSet<Size> Sizes { get; }
+        IDbSet<Brand> Brands { get; }
+        IDbSet<Gender> Genders { get; }
+        IDbSet<ProductVariant> ProductsVariant { get; }   
+    }
+
+
+}
