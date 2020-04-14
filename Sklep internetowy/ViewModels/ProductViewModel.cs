@@ -10,6 +10,7 @@ namespace Sklep_internetowy.View
     {
         public IEnumerable<ProductVariant> productVariants { get; set; }
         public Product Product { get; set; }
+      
 
     }
 }

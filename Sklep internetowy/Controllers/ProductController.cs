@@ -1,5 +1,7 @@
 ﻿using Sklep_internetowy.DAL;
+using Sklep_internetowy.DAL.Interfaces;
 using Sklep_internetowy.Models;
+using Sklep_internetowy.Service.Interfaces;
 using Sklep_internetowy.View;
 using System;
 using System.Collections.Generic;
@@ -27,8 +29,23 @@ namespace Sklep_internetowy.Controllers
         }
         public ActionResult ProductDetails(int id)
         {
+            ViewBag.Sizes = new SelectList(db.ProductsVariant.Where(p => p.ProductId == id).Select(p => p.Size), "SizeId", "size");
+            ViewBag.Colors = new SelectList(db.ProductsVariant.Where(p => p.ProductId == id).Select(p => p.Color), "ColorId", "color");
             return View(cs.GetAllDetailsForGivenProductId(id));
         }
+        public JsonResult GetColors(int id)
+        {
+            return Json(new SelectList(db.ProductsVariant.Where(p => p.SizeId == id).Select(p => p.Color), "ColorId", "color"));
+        }
+
+        //Action result for ajax call
+        [HttpPost]
+        public ActionResult GetColorByChoosedSize(int sizeId, int productId)
+        {
+            SelectList colorsList = new SelectList(db.ProductsVariant.Where(p => p.SizeId == sizeId && p.Product.ProductId == productId).Select(c => c.Color).ToList(), "ColorId", "color");
+            return Json(colorsList);
+        }
+
 
         [ChildActionOnly]
         public ActionResult MainCategoriesMenu()
@@ -38,10 +55,10 @@ namespace Sklep_internetowy.Controllers
 
         [ChildActionOnly]
         public ActionResult CategoriesMenu(int idMainCategory)
-        {  
+        {
             return PartialView("_CategoriesMenu", cs.GetCategoriesForGivenMainCategory(idMainCategory));
         }
 
-     
+
     }
 }

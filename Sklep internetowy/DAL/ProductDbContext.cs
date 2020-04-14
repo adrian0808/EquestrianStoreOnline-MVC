@@ -1,5 +1,6 @@
 namespace Sklep_internetowy
 {
+    using Sklep_internetowy.DAL.Interfaces;
     using Sklep_internetowy.Models;
     using System;
     using System.Data.Entity;
@@ -41,19 +42,6 @@ namespace Sklep_internetowy
         public IDbSet<ProductVariant> ProductsVariant { get; set; }
     }
 
-    public interface IProductDbContext
-    {
-
-        IDbSet<Product> Products { get; }
-        IDbSet<Category> Categories { get; }
-        IDbSet<MainCategory> MainCategories { get; }
-        IDbSet<Stock> Stocks { get; }
-        IDbSet<Color> Colors { get; }
-        IDbSet<Size> Sizes { get; }
-        IDbSet<Brand> Brands { get; }
-        IDbSet<Gender> Genders { get; }
-        IDbSet<ProductVariant> ProductsVariant { get; }   
-    }
-
+    
 
 }

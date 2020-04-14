@@ -254,7 +254,17 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
-    <Compile Include="DAL\ContextServices.cs" />
+    <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="DAL\Interfaces\IClock.cs" />
+    <Compile Include="DAL\Interfaces\IProductDbContext.cs" />
+    <Compile Include="DAL\SystemClock.cs" />
+    <Compile Include="Migrations\202004131344248_init.cs" />
+    <Compile Include="Migrations\202004131344248_init.designer.cs">
+      <DependentUpon>202004131344248_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderPosition.cs" />
+    <Compile Include="Service\ContextServices.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -266,15 +276,9 @@
     <Compile Include="Infrastructure\ICacheProvider.cs" />
     <Compile Include="Infrastructure\MainCategoryDynamicNodeProvider.cs" />
     <Compile Include="Infrastructure\ProductDynamicNodeProvider.cs" />
+    <Compile Include="Infrastructure\ISessionManager.cs" />
+    <Compile Include="Infrastructure\SessionManager.cs" />
     <Compile Include="Infrastructure\UrlHelpers.cs" />
-    <Compile Include="Migrations\202003081227453_create all tables.cs" />
-    <Compile Include="Migrations\202003081227453_create all tables.designer.cs">
-      <DependentUpon>202003081227453_create all tables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003131410473_addInterface.cs" />
-    <Compile Include="Migrations\202003131410473_addInterface.designer.cs">
-      <DependentUpon>202003131410473_addInterface.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Brand.cs" />
     <Compile Include="Models\Category.cs" />
@@ -283,12 +287,17 @@
     <Compile Include="Models\MainCategory.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductVariant.cs" />
+    <Compile Include="Models\ShoppingCartPosition.cs" />
     <Compile Include="Models\Size.cs" />
     <Compile Include="Models\Stock.cs" />
     <Compile Include="DAL\ProductDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\Interfaces\IServices.cs" />
+    <Compile Include="Service\Interfaces\IShoppingCartServices.cs" />
+    <Compile Include="Service\ShoppingCartServices.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
+    <Compile Include="ViewModels\ShoppingCartViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -430,6 +439,8 @@
     <Content Include="Views\Shared\DisplayTemplates\MetaRobotsHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MenuHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\CanonicalHelperModel.cshtml" />
+    <Content Include="Views\Category\NewsContent.cshtml" />
+    <Content Include="Views\ShoppingCart\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -446,11 +457,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003081227453_create all tables.resx">
-      <DependentUpon>202003081227453_create all tables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003131410473_addInterface.resx">
-      <DependentUpon>202003131410473_addInterface.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202004131344248_init.resx">
+      <DependentUpon>202004131344248_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

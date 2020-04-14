@@ -127,55 +127,55 @@
             {
                 new Product() { ProductId = 1, CategoryId = 1, BrandId = 6, GenderId = 4, Name = "Siodło Rajdowe MAX Standard",
                     Description = "Zaprojektowane specjalnie z myślą o rajdach siodło Max posiada bardzo głębokie siedzisko dodatkowo przeszywane, co zapobiega przesuwaniu się jeźdzca w siodle w trudnym terenie oraz zapewnia komfortowa miękkość. Dzięki umieszczeniu siedziska na długich ławkach z miękkim podbiciem uzyskano konieczną podczas długich rajdów wentylację pod siodłem oraz przyleganie do grzbietu konia na większej powierzchni, co zapewnia zwięrzeciu wysoki komfort. Dodatkowo w tylnych częściach ławek znajdują się uchwyty ze stali nierdzewnej, do których można przytroczyć sakwy.Siodło wyposażone jest w wysokie przednie i tylne klocki oraz miękka poduszkę kolanową. Posiada także elastyczną terlicę oraz mocno osadzony uchwyt do przytrzymania się w razie konieczności. Siedzisko i poduszki kolanowe wykonane są z wysokiej jakości skóry antypoślizgowej.",
-                    Price = 3370, GraphicFileName = "SiodloRajdoweMAXStandard.png", AddingDate = DateTime.Now, isBestseller = true },
+                    Price = 3370, GraphicFileName = "SiodloRajdoweMAXStandard.png", AddingDate = DateTime.Now, isBestseller = true, isSize = true, isColor = true },
 
                 new Product() { ProductId = 2, CategoryId = 2, BrandId = 5, GenderId = 4, Name = "Ochraniacze eSHOCK, PRZEDNIE",
                     Description = "Wysokiej jakości ochraniacze wyposażone w system eFLUIDGEL. Wykonane z wysokiej jakości trwałych materiałów. Anatomiczny kształt doskonale chroni ścięgna przed urazami i zapewnia maksimum komfortu podczas użytkowania. Z zewnątrz wzmocnione tworzywem TPU. Wewnątrz wyściełanie miękkim neoprenem zapobiegającym otarciom i odparzeniom. Łatwa regulacja za pomocą pasków zapinanych na kołki.",
-                    Price = 545, GraphicFileName = "EQUICK_Ochraniacze_eSHOCK_przednie.png", AddingDate = DateTime.Now, isBestseller = false },
+                    Price = 545, GraphicFileName = "EQUICK_Ochraniacze_eSHOCK_przednie.png", AddingDate = DateTime.Now, isBestseller = false, isSize = true, isColor = true },
 
                 new Product() { ProductId = 3, CategoryId = 3, BrandId = 7, GenderId = 4, Name = "Kaloszki SPACE",
                     Description = "Wysokiej jakości kaloszki firmy HKM.",
-                    Price = 113, GraphicFileName = "HKM_Space_Kaloszki_Rozowe.png", AddingDate = DateTime.Now, isBestseller = false },
+                    Price = 113, GraphicFileName = "HKM_Space_Kaloszki_Rozowe.png", AddingDate = DateTime.Now, isBestseller = false, isSize = true, isColor = true },
 
                 new Product() { ProductId = 4, CategoryId = 4, BrandId = 7, GenderId = 4, Name = "Owijki wełniane WOOL",
                     Description = "TORPOL, Owijki wełniane WOOL. Świetne właściwości termoregulacyjne",
-                    Price = 279, GraphicFileName = "TORPOL_Owijki_WOOL.png", AddingDate = DateTime.Now, isBestseller = false },
+                    Price = 279, GraphicFileName = "TORPOL_Owijki_WOOL.png", AddingDate = DateTime.Now, isBestseller = false, isSize = true, isColor = true },
 
                 new Product() { ProductId = 5, CategoryId = 5, BrandId = 4, GenderId = 4, Name = "Podkładka skokowa BACK PROTECT SOLUTION",
                     Description = "Zawaansowana technologicznie podkładka firmy Winderen. Innowacyjna warstowa budowa zapewnia wyjątkowy komfort nie tylko jeźdźcom ale i koniom.",
-                    Price = 956, GraphicFileName = "WINDEREN_Podkladka_skokowa_back_protect_solution.png", AddingDate = DateTime.Now, isBestseller = true },
+                    Price = 956, GraphicFileName = "WINDEREN_Podkladka_skokowa_back_protect_solution.png", AddingDate = DateTime.Now, isBestseller = true, isSize = true, isColor = true },
 
                 new Product() { ProductId = 6, CategoryId = 6, BrandId = 9, GenderId = 4, Name = "Kantar EQUISITE",
                     Description = "Kantar wykonany z nylonowej taśmy.",
-                    Price = 95, GraphicFileName = "BR_Kantar_Equisite_Zloty.png", AddingDate = DateTime.Now, isBestseller = true },
+                    Price = 95, GraphicFileName = "BR_Kantar_Equisite_Zloty.png", AddingDate = DateTime.Now, isBestseller = true, isSize = true, isColor = true },
 
                 new Product() { ProductId = 7, CategoryId = 7, BrandId = 7, GenderId = 4, Name = "Derka podszyta polarem",
                     Description = "Wiatroodporna, wodoodporna. Pasy krzyzowe,klapka na ogon. 100% poliester, 600D material poliester, 600D mocny material zewnetrzny.",
-                    Price = 95, GraphicFileName = "Derka_podszyta_HKM_Granatowa.png", AddingDate = DateTime.Now, isBestseller = false },
+                    Price = 95, GraphicFileName = "Derka_podszyta_HKM_Granatowa.png", AddingDate = DateTime.Now, isBestseller = false, isSize = true, isColor = true },
 
                 new Product() { ProductId = 8, CategoryId = 8, BrandId = 7, GenderId = 4, Name = "Ogłowie LOU",
                     Description = "Ogłowie firmy HKM. Wykonane ze skóry bydlęcej",
-                    Price = 147, GraphicFileName = "HKM_Oglowie_LUO_Czarne.png", AddingDate = DateTime.Now, isBestseller = false },
+                    Price = 147, GraphicFileName = "HKM_Oglowie_LUO_Czarne.png", AddingDate = DateTime.Now, isBestseller = false, isSize = true, isColor = true },
 
                 new Product() { ProductId = 9, CategoryId = 9, BrandId = 10, GenderId = 4, Name = "Popręg anatomiczny symetryczny z gumami",
                     Description = "Popręg wykonany z wysokiej jakości impregnowanej skóry, co zapobiega wchłanianiu potu.",
-                    Price = 950, GraphicFileName = "PRESTIGE_Popreg_Czarny_Zgumami.png", AddingDate = DateTime.Now, isBestseller = false },
+                    Price = 950, GraphicFileName = "PRESTIGE_Popreg_Czarny_Zgumami.png", AddingDate = DateTime.Now, isBestseller = false, isSize = true, isColor = true },
 
                 new Product() { ProductId = 10, CategoryId = 10, BrandId = 7, GenderId = 4, Name = "Czaprak ujeżdżeniowy ANATOMIC TOP LINE",
                     Description = "Wysokiej jakości czaprak firmy Winderen. Anatomicznie profil zaprojektowany aby dopasować do krzywizm grzbietu konia.",
-                    Price = 315, GraphicFileName = "Czaprak_Ujezdzeniowy_WINDEREN_TOPLine.png", AddingDate = DateTime.Now, isBestseller = false },
+                    Price = 315, GraphicFileName = "Czaprak_Ujezdzeniowy_WINDEREN_TOPLine.png", AddingDate = DateTime.Now, isBestseller = false, isSize = false, isColor = true },
 
                 new Product() { ProductId = 11, CategoryId = 11, BrandId = 7, GenderId = 1, Name = "Bryczesy JEANS 56 damskie",
                     Description = "Bryczesy HKM  KINGSTON JEANS 3/4 ALOS +SILIKON",
-                    Price = 390, GraphicFileName = "Bryczesy_HKM_Kingston_Jeans56.png", AddingDate = DateTime.Now, isBestseller = false },
+                    Price = 390, GraphicFileName = "Bryczesy_HKM_Kingston_Jeans56.png", AddingDate = DateTime.Now, isBestseller = false, isSize = true, isColor = true },
 
                 new Product() { ProductId = 12, CategoryId = 12, BrandId = 3, GenderId = 3, Name = "Kaskotoczek z regulacją czarny",
                     Description = "Nowy model kaskoteczka chroniacy glowe jezdzca. Wyposazony w pokretlo umozliwiajace dopasowanie rozmiaru",
-                    Price = 109, GraphicFileName = "Kaskotoczek_York_Regulacja_Czarny.png", AddingDate = DateTime.Now, isBestseller = true },
+                    Price = 109, GraphicFileName = "Kaskotoczek_York_Regulacja_Czarny.png", AddingDate = DateTime.Now, isBestseller = true, isSize = true, isColor = true },
 
                 new Product() { ProductId = 13, CategoryId = 13, BrandId = 7, GenderId = 3, Name = "Podkolanówki WINDSOR",
                     Description = "HKM, Podkolanówki WINDSOR. Podkolanówki fitrmy HKM. Skład: 80% bawełna, 17% poliester, 3% elastan.",
-                    Price = 39, GraphicFileName = "HKM_Podkolanowki_Windsor.png", AddingDate = DateTime.Now, isBestseller = false }
+                    Price = 39, GraphicFileName = "HKM_Podkolanowki_Windsor.png", AddingDate = DateTime.Now, isBestseller = false, isSize = true, isColor = true }
 
             };
 
@@ -214,6 +214,38 @@
 
             listOfProductsVariant.ForEach(p => context.ProductsVariant.AddOrUpdate(p));
             context.SaveChanges();
-        }
-    }
-}
+
+            var listOfStocks = new List<Stock>()
+            {
+                new Stock() { ProductVariantId = 1, CountOfStock = 6, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 2, CountOfStock = 3, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 3, CountOfStock = 11, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 4, CountOfStock = 2, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 5, CountOfStock = 1, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 6, CountOfStock = 9, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 7, CountOfStock = 2, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 8, CountOfStock = 4, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 9, CountOfStock = 13, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 10, CountOfStock = 11, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 11, CountOfStock = 7, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 12, CountOfStock = 2, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 13, CountOfStock = 3, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 14, CountOfStock = 1, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 15, CountOfStock = 19, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 16, CountOfStock = 12, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 17, CountOfStock = 16, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 18, CountOfStock = 5, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 19, CountOfStock = 12, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 20, CountOfStock = 2, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 21, CountOfStock = 1, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 22, CountOfStock = 13, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 23, CountOfStock = 11, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 24, CountOfStock = 9, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 25, CountOfStock = 14, LastUpdateTime = DateTime.Now},
+                new Stock() { ProductVariantId = 26, CountOfStock = 7, LastUpdateTime = DateTime.Now},
+            };                
+        }                     
+    }                         
+}                             
+                              
+                              

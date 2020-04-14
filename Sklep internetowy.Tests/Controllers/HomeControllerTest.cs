@@ -5,6 +5,8 @@ using NUnit.Framework;
 using Sklep_internetowy.DAL;
 using Sklep_internetowy.Models;
 using System.Collections.Generic;
+using Sklep_internetowy.DAL.Interfaces;
+using Sklep_internetowy.Service.Interfaces;
 
 namespace Sklep_internetowy.Tests.Controllers
 {

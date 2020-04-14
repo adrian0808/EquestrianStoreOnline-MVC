@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sklep_internetowy.Infrastructure
 {
-    interface ICacheProvider
+    public interface ICacheProvider
     {
         object Get(string key); //getting data from cache
         void Set(string key, object data, int cacheTime); //adding data to cache

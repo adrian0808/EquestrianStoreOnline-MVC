@@ -4,6 +4,8 @@ using Sklep_internetowy.Controllers;
 using NUnit.Framework;
 using Sklep_internetowy.DAL;
 using AutoMoq;
+using Sklep_internetowy.Service.Interfaces;
+using Sklep_internetowy.DAL.Interfaces;
 
 namespace Sklep_internetowy.Tests.Controllers
 {

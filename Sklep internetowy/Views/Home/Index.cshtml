@@ -52,7 +52,7 @@
                 {
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100" style="position: relative;">
-                            <a href="#">
+                            <a href="@Url.Action("ProductDetails", "Product", new { id = i.ProductId, idMainCategory = i.Category.MainCategoryId })">
                                 <img class="card-img-top" src="@Url.GraphicsFilePath(i.GraphicFileName)" alt="">
                                 <div class="product-label" style="position: absolute; right: 10px; top:10px;">
                                     <span class="bestseller-product-icon" style="background-color:#e27c7c; text-align:center; display:block; padding: 10px; font-size:14px; font-weight:700; color:#fff;">BESTSELLER</span>
@@ -60,7 +60,7 @@
                             </a>
                             <div class="card-body">
                                 <h4 class="card-title">
-                                    <a href="#">@i.Brand.brand, @i.Name</a>
+                                    <a href="@Url.Action("ProductDetails", "Product", new { id = i.ProductId, idMainCategory = i.Category.MainCategoryId })">@i.Brand.brand, @i.Name</a>
                                 </h4>
                                 <h5>@i.Price zł</h5>
                             </div>
@@ -75,7 +75,7 @@
                 {
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100" style="position: relative;">
-                            <a href="#">
+                            <a href="@Url.Action("ProductDetails", "Product", new { id = j.ProductId, idMainCategory = j.Category.MainCategoryId })" >
                                 <img class="card-img-top" src="@Url.GraphicsFilePath(j.GraphicFileName)" alt="">
                                 <div class="product-label" style="position: absolute; right: 10px; top:10px;">
                                     <span class="nowosc-product-icon" style="background-color: aquamarine; text-align:center; display:block; padding: 10px; font-size:14px; font-weight:700; color:#fff;">NOWOŚĆ</span>
@@ -83,7 +83,7 @@
                             </a>
                             <div class="card-body">
                                 <h4 class="card-title">
-                                    <a href="#">@j.Brand.brand, @j.Name</a>
+                                    <a href="@Url.Action("ProductDetails", "Product", new { id = j.ProductId, idMainCategory = j.Category.MainCategoryId })">@j.Brand.brand, @j.Name</a>
                                 </h4>
                                 <h5>@j.Price zł</h5>
                             </div>

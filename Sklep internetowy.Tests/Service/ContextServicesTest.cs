@@ -9,17 +9,28 @@ using System.Data.Entity;
 using System;
 using System.Linq;
 using Sklep_internetowy.View;
+using Sklep_internetowy.Infrastructure;
+using Sklep_internetowy.DAL.Interfaces;
 
 namespace Sklep_internetowy.Tests.Service
 {
     class ContextServicesTest
     {
+        private Mock<ICacheProvider> mockCache;
+        private Mock<IClock> mockClock;
+        [SetUp]
+        public void SetUp()
+        {
+            mockCache = new Mock<ICacheProvider>();
+            mockClock = new Mock<IClock>();
+        }
 
         [Test]
         [TestCase(1)]
         public void GetProductsForGivenCategory_Should_ReturnAllProductsForGivenCategory(int CategoryId)
         {
             //Arrange
+            
             var ListOfProducts = new List<Product>()
             {
                 new Product() { ProductId = 1, CategoryId = 1 },
@@ -39,7 +50,7 @@ namespace Sklep_internetowy.Tests.Service
             var mockContext = new Mock<IProductDbContext>();
             mockContext.Setup(c => c.Products).Returns(mockSet.Object);
 
-            var service = new ContextServices(mockContext.Object);
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
 
             //Act
             var result = service.GetProductsForGivenCategory(CategoryId);
@@ -53,7 +64,7 @@ namespace Sklep_internetowy.Tests.Service
         [Test]
         public void GetBestsellersAndNewsForMainPage_Should_ReturnThreeBestsellersAndNewProducts()
         {
-            //Arrange
+            //Arrange  
             var ListOfProducts = new List<Product>()
             {
                 new Product() { ProductId = 1, Name = "a", isBestseller = true, AddingDate = new DateTime(2020,03,10,18,43,45) },
@@ -64,6 +75,8 @@ namespace Sklep_internetowy.Tests.Service
                 new Product() { ProductId = 6, Name = "f", isBestseller = true, AddingDate = new DateTime(2020,03,10,18,42,21) },
             }.AsQueryable();
 
+            mockCache.Setup(m => m.Get(It.IsAny<string>())).Returns(ListOfProducts);
+
             var mockSet = new Mock<IDbSet<Product>>();
             mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(ListOfProducts.Provider);
             mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(ListOfProducts.Expression);
@@ -73,7 +86,7 @@ namespace Sklep_internetowy.Tests.Service
             var mockContext = new Mock<IProductDbContext>();
             mockContext.Setup(m => m.Products).Returns(mockSet.Object);
 
-            var service = new ContextServices(mockContext.Object);
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
 
             //Act
             var result = service.GetBestsellersAndNewsForMainPage();
@@ -90,7 +103,7 @@ namespace Sklep_internetowy.Tests.Service
         [Test]
         public void GetAllMainCategories_Should_ReturnAllMainCategories()
         {
-            //Arrange
+            //Arrange          
             var ListOfMainCategories = new List<MainCategory>()
             {
                 new MainCategory() { MainCategoryId = 1, Name = "a"},
@@ -109,7 +122,7 @@ namespace Sklep_internetowy.Tests.Service
             var mockContext = new Mock<IProductDbContext>();
             mockContext.Setup(x => x.MainCategories).Returns(mockSet.Object);
 
-            var service = new ContextServices(mockContext.Object);
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
 
             //Act
             var result = service.GetAllMainCategories();
@@ -122,10 +135,144 @@ namespace Sklep_internetowy.Tests.Service
 
         [Test]
         [TestCase(1)]
+        public void GetProductsForGivenCategoryWithFilter_NoFilter_ReturnAllProductForGivenCategory(int idCategory)
+        {
+            //Arrange
+            var listOfBrands = new List<Brand>()
+            {
+                new Brand() { BrandId = 1, brand = "x"},
+                new Brand() { BrandId = 2, brand = "y"},
+                new Brand() { BrandId = 3, brand = "z"}
+
+            }.AsQueryable();
+
+            var listOfProducts = new List<Product>()
+            {
+                new Product() { ProductId = 1, CategoryId = 1, Name = "abc", Brand = listOfBrands.Where(b => b.BrandId == 1).SingleOrDefault() },
+                new Product() { ProductId = 2, CategoryId = 2, Name = "bac", Brand = listOfBrands.Where(b => b.BrandId == 2).SingleOrDefault() },
+                new Product() { ProductId = 3, CategoryId = 2, Name = "bab", Brand = listOfBrands.Where(b => b.BrandId == 3).SingleOrDefault() },
+                new Product() { ProductId = 4, CategoryId = 1, Name = "acb", Brand = listOfBrands.Where(b => b.BrandId == 1).SingleOrDefault() },
+                new Product() { ProductId = 5, CategoryId = 1, Name = "cab", Brand = listOfBrands.Where(b => b.BrandId == 2).SingleOrDefault() }
+
+            }.AsQueryable();
+
+            var mockSet = new Mock<IDbSet<Product>>();
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(listOfProducts.Provider);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(listOfProducts.Expression);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(listOfProducts.ElementType);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(listOfProducts.GetEnumerator());
+
+            var mockContext = new Mock<IProductDbContext>();
+            mockContext.Setup(s => s.Products).Returns(mockSet.Object);
+
+            var mockCache = new Mock<ICacheProvider>();
+
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
+
+            //Act
+            var result = service.GetProductsForGivenCategoryWithFilter(idCategory, null);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<List<Product>>(result);
+            Assert.AreEqual(3, result.Count);
+
+        }
+
+        [Test]
+        [TestCase(1, "ab")]
+        public void GetProductsForGivenCategoryWithFilter_StringContainsFilterToLower_ReturnAllProductForGivenCategory(int idCategory, string searchTerm)
+        {
+            //Arrange
+            var listOfBrands = new List<Brand>()
+            {
+                new Brand() { BrandId = 1, brand = "ABB"},
+                new Brand() { BrandId = 2, brand = "BAB"},
+                new Brand() { BrandId = 3, brand = "CBA"}
+
+            }.AsQueryable();
+
+            var listOfProducts = new List<Product>()
+            {
+                new Product() { ProductId = 1, CategoryId = 1, Name = "ABC", Brand = listOfBrands.Where(b => b.BrandId == 1).SingleOrDefault() },
+                new Product() { ProductId = 2, CategoryId = 2, Name = "BAC", Brand = listOfBrands.Where(b => b.BrandId == 3).SingleOrDefault() },
+                new Product() { ProductId = 3, CategoryId = 2, Name = "BAB", Brand = listOfBrands.Where(b => b.BrandId == 1).SingleOrDefault() },
+                new Product() { ProductId = 4, CategoryId = 1, Name = "ACB", Brand = listOfBrands.Where(b => b.BrandId == 3).SingleOrDefault() },
+                new Product() { ProductId = 5, CategoryId = 1, Name = "CAB", Brand = listOfBrands.Where(b => b.BrandId == 2).SingleOrDefault() }
+
+            }.AsQueryable();
+
+            var mockSet = new Mock<IDbSet<Product>>();
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(listOfProducts.Provider);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(listOfProducts.Expression);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(listOfProducts.ElementType);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(listOfProducts.GetEnumerator());
+
+            var mockContext = new Mock<IProductDbContext>();
+            mockContext.Setup(s => s.Products).Returns(mockSet.Object);         
+
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
+
+            //Act
+            var result = service.GetProductsForGivenCategoryWithFilter(idCategory, searchTerm);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<List<Product>>(result);
+            Assert.AreEqual(2, result.Count);
+
+        }
+
+        [Test]
+        [TestCase(1, "BA")]
+        public void GetProductsForGivenCategoryWithFilter_StringContainsFilterToUpper_ReturnAllProductForGivenCategory(int idCategory, string searchTerm)
+        {
+            //Arrange
+            var listOfBrands = new List<Brand>()
+            {
+                new Brand() { BrandId = 1, brand = "abb"},
+                new Brand() { BrandId = 2, brand = "bab"},
+                new Brand() { BrandId = 3, brand = "cba"}
+
+            }.AsQueryable();
+
+            var listOfProducts = new List<Product>()
+            {
+                new Product() { ProductId = 1, CategoryId = 1, Name = "abc", Brand = listOfBrands.Where(b => b.BrandId == 1).SingleOrDefault() },
+                new Product() { ProductId = 2, CategoryId = 2, Name = "bac", Brand = listOfBrands.Where(b => b.BrandId == 3).SingleOrDefault() },
+                new Product() { ProductId = 3, CategoryId = 2, Name = "bab", Brand = listOfBrands.Where(b => b.BrandId == 1).SingleOrDefault() },
+                new Product() { ProductId = 4, CategoryId = 1, Name = "acb", Brand = listOfBrands.Where(b => b.BrandId == 3).SingleOrDefault() },
+                new Product() { ProductId = 5, CategoryId = 1, Name = "cab", Brand = listOfBrands.Where(b => b.BrandId == 2).SingleOrDefault() }
+
+            }.AsQueryable();
+
+            var mockSet = new Mock<IDbSet<Product>>();
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(listOfProducts.Provider);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(listOfProducts.Expression);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(listOfProducts.ElementType);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(listOfProducts.GetEnumerator());
+
+            var mockContext = new Mock<IProductDbContext>();
+            mockContext.Setup(s => s.Products).Returns(mockSet.Object);
+
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
+
+            //Act
+            var result = service.GetProductsForGivenCategoryWithFilter(idCategory, searchTerm);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<List<Product>>(result);
+            Assert.AreEqual(2, result.Count);
+
+        }
+
+        [Test]
+        [TestCase(1)]
         public void GetProductsForGivenMainCategoryWithFilter_NoFilter_ReturnAllProductForGivenMainCategory(int idMainCategory)
         {
             //Arrange
-
+           
             var ListOfCategories = new List<Category>()
             {
                 new Category() { CategoryId = 1, MainCategoryId = 1, Name = "a"},
@@ -153,7 +300,7 @@ namespace Sklep_internetowy.Tests.Service
             var mockContext = new Mock<IProductDbContext>();
             mockContext.Setup(c => c.Products).Returns(mockSet.Object);
 
-            var service = new ContextServices(mockContext.Object);
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
 
             //Act
             var result = service.GetProductsForGivenMainCategoryWithFilter(idMainCategory, null);
@@ -170,6 +317,7 @@ namespace Sklep_internetowy.Tests.Service
         public void GetProductsForGivenMainCategoryWithFilter_FilterContainsStringToLower_ReturnAllProductForGivenMainCategoryAndFromGivenFilter(int idMainCategory, string searchContain)
         {
             //Arrange
+            
             var listOfBrands = new List<Brand>()
             {
                 new Brand() { BrandId = 1, brand = "ab"},
@@ -205,7 +353,7 @@ namespace Sklep_internetowy.Tests.Service
             var mockContext = new Mock<IProductDbContext>();
             mockContext.Setup(s => s.Products).Returns(mockSet.Object);
 
-            var service = new ContextServices(mockContext.Object);
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
 
             //Act
             var result = service.GetProductsForGivenMainCategoryWithFilter(idMainCategory, searchContain);
@@ -220,6 +368,7 @@ namespace Sklep_internetowy.Tests.Service
         public void GetProductsForGivenMainCategoryWithFilter_FilterContainsStringToUpper_ReturnAllProductForGivenMainCategoryAndFromGivenFilter(int idMainCategory, string searchContain)
         {
             //Arrange
+            
             var listOfBrands = new List<Brand>()
             {
                 new Brand() { BrandId = 1, brand = "ab"},
@@ -255,7 +404,7 @@ namespace Sklep_internetowy.Tests.Service
             var mockContext = new Mock<IProductDbContext>();
             mockContext.Setup(s => s.Products).Returns(mockSet.Object);
 
-            var service = new ContextServices(mockContext.Object);
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
 
             //Act
             var result = service.GetProductsForGivenMainCategoryWithFilter(idMainCategory, searchContain);
@@ -269,6 +418,7 @@ namespace Sklep_internetowy.Tests.Service
         public void GetProductsWhichAreBestsellers_Should_ReturnAllBestsellersProducts()
         {
             //Arrange
+            
             var ListOfProducts = new List<Product>()
             {
                 new Product() { ProductId = 1, isBestseller = true },
@@ -287,7 +437,8 @@ namespace Sklep_internetowy.Tests.Service
 
             var mockContext = new Mock<IProductDbContext>();
             mockContext.Setup(c => c.Products).Returns(mockSet.Object);
-            var service = new ContextServices(mockContext.Object);
+
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
 
             //Act
             var result = service.GetProductsWhichAreBestsellers();
@@ -299,10 +450,51 @@ namespace Sklep_internetowy.Tests.Service
         }
 
         [Test]
+        public void GetProductsWhichAreNew_NotOlderThan30Days_ReturnAllNewProduct()
+        {
+            //Arrange
+            
+            
+            var mockClock = new Mock<IClock>();
+            mockClock.Setup(s => s.Now).Returns(new DateTime(2020, 4, 10));
+
+            var listOfProducts = new List<Product>()
+            {
+                new Product() { ProductId = 1, AddingDate = new DateTime(2020, 4, 10) },
+                new Product() { ProductId = 2, AddingDate = new DateTime(2020, 4, 2) },
+                new Product() { ProductId = 3, AddingDate = new DateTime(2020, 3, 22) },
+                new Product() { ProductId = 4, AddingDate = new DateTime(2020, 3, 7) },
+                new Product() { ProductId = 5, AddingDate = new DateTime(2020, 2, 27) }
+
+            }.AsQueryable();
+
+            var mockSet = new Mock<IDbSet<Product>>();
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(listOfProducts.Provider);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(listOfProducts.Expression);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(listOfProducts.ElementType);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(listOfProducts.GetEnumerator());
+
+            var mockContext = new Mock<IProductDbContext>();
+            mockContext.Setup(s => s.Products).Returns(mockSet.Object);
+
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
+
+            //Act
+            var result = service.GetProductsWhichAreNew();
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<List<Product>>(result);
+            Assert.AreEqual(3, result.Count);
+           
+        }
+
+        [Test]
         [TestCase(1)]
         public void GetCategoriesForGivenMainCategory_Should_ReturnAllCategoriesForGivenMainCategory(int idMainCategory)
         {
             //Arrange
+            
             var listOfMainCategories = new List<MainCategory>()
             {
                 new MainCategory() { MainCategoryId = 1, Name = "a"},
@@ -329,7 +521,7 @@ namespace Sklep_internetowy.Tests.Service
             var mockContext = new Mock<IProductDbContext>();
             mockContext.Setup(s => s.Categories).Returns(mockSet.Object);
 
-            var service = new ContextServices(mockContext.Object);
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
 
             //Act
             var result = service.GetCategoriesForGivenMainCategory(idMainCategory);
@@ -345,6 +537,7 @@ namespace Sklep_internetowy.Tests.Service
         public void GetAllDetailsForGivenProductId_Should_ReturnProductViewModel(int id)
         {
             //Arrange
+            
             var listOfProducts = new List<Product>()
             {
                 new Product() { ProductId = 1 },
@@ -381,10 +574,10 @@ namespace Sklep_internetowy.Tests.Service
             mockContext.Setup(m => m.Products).Returns(mockSet.Object);
             mockContext.Setup(m => m.ProductsVariant).Returns(mockSet2.Object);
 
-            var services = new ContextServices(mockContext.Object);
+            var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
 
             //Act
-            var result = services.GetAllDetailsForGivenProductId(id);
+            var result = service.GetAllDetailsForGivenProductId(id);
 
             //Assert
             Assert.IsInstanceOf<ProductViewModel>(result);

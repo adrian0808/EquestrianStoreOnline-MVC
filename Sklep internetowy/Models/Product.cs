@@ -24,6 +24,8 @@ namespace Sklep_internetowy.Models
         public string Description { get; set; }
         [Required]
         public bool isBestseller { get; set; }
+        public bool isSize { get; set; }
+        public bool isColor { get; set; }
         public DateTime AddingDate { get; set; }
         public decimal Price { get; set; }
         public string GraphicFileName { get; set; }

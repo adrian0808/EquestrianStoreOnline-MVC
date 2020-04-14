@@ -1,5 +1,7 @@
 ﻿using Sklep_internetowy.DAL;
+using Sklep_internetowy.DAL.Interfaces;
 using Sklep_internetowy.Models;
+using Sklep_internetowy.Service.Interfaces;
 using Sklep_internetowy.View;
 using System;
 using System.Collections.Generic;
@@ -32,9 +34,9 @@ namespace Sklep_internetowy.Controllers
             return View(cs.GetProductsForGivenMainCategoryWithFilter(idMainCategory, searchTerm));
         }
 
-        public ActionResult CategoryContent(int idCategory)
+        public ActionResult CategoryContent(int idCategory, string searchTerm)
         {
-            return View(cs.GetProductsForGivenCategory(idCategory));
+            return View(cs.GetProductsForGivenCategoryWithFilter(idCategory, searchTerm));
         }
 
         public ActionResult BestsellerContent()
@@ -42,7 +44,10 @@ namespace Sklep_internetowy.Controllers
             return View(cs.GetProductsWhichAreBestsellers());
         }
 
-
+        public ActionResult NewsContent()
+        {
+            return View(cs.GetProductsWhichAreNew());
+        }
 
         [ChildActionOnly]
         public ActionResult CategoriesMenu(int idMainCategory)

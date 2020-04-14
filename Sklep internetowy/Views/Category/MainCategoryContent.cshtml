@@ -25,7 +25,7 @@
                 @Html.MvcSiteMap().SiteMapPath()
             </div>
 
-            <br></br>
+            <br><br />
             
             @using (Html.BeginForm())
             {
@@ -40,7 +40,7 @@
                 {
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100" style="position: relative;">
-                            <a href="@Url.Action("ProductDetails", "Product", new { id = i.ProductId })">
+                            <a href="@Url.Action("ProductDetails", "Product", new { id = i.ProductId, idMainCategory = i.Category.MainCategoryId })">
                                 <img class="card-img-top" src="@Url.GraphicsFilePath(i.GraphicFileName)" alt="">
                                 @if (i.isBestseller)
                                 {
@@ -51,7 +51,7 @@
                             </a>
                             <div class="card-body">
                                 <h4 class="card-title">
-                                    <a href="@Url.Action("ProductDetails", "Product", new { id = i.ProductId })">@i.Brand.brand, @i.Name</a>
+                                    <a href="@Url.Action("ProductDetails", "Product", new { id = i.ProductId, idMainCategory = i.Category.MainCategoryId })">@i.Brand.brand, @i.Name</a>
                                 </h4>
                                 <h5>@i.Price zł</h5>
                             </div>
@@ -78,41 +78,4 @@
 {
     @System.Web.Optimization.Scripts.Render("~/bundles/JqueryAndJqueryui")
 }
-
-<script>
-        $(function () {
-            var setupAutoComplete = function () {
-                var $input = $(this);
-                var options =
-                    {
-                        source: $input.attr("data-autocomplete-source"),
-                        select: function (event, ui) {
-                            $input = $(this);
-                            $input.val(ui.item.label);
-                            var $form = $input.parents("form:first");
-                            $form.submit();
-                        }
-                    };
-                $input.autocomplete(options);
-            };
-
-            var ajaxSubmit = function () {
-                var $form = $(this);
-                var settings = {
-                    data: $(this).serialize(),
-                    url: $(this).attr("action"),
-                    type: $(this).attr("method")
-                };
-                $.ajax(settings).done(function (result) {
-                    var $targetElement = $($form.data("ajax-target"));
-                    var $newContent = $(result);
-                    $($targetElement).replaceWith($newContent);
-                    $newContent.effect("slide");
-                });
-                return false;
-            };
-            $("#search-filter").each(setupAutoComplete);
-            $("#search-form").submit(ajaxSubmit);
-        });
-</script>
 

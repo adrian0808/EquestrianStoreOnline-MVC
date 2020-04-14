@@ -1,4 +1,5 @@
 ﻿@model Sklep_internetowy.View.ProductViewModel
+
 @using Sklep_internetowy.Infrastructure
 
 @{
@@ -36,7 +37,7 @@
 
 <!-- Page Content -->
 <div class="container" onchange="validation()">
-    
+
     <div class="row">
 
         <div class="col-lg-3">
@@ -47,13 +48,13 @@
 
 
         <!-- /.col-lg-3 -->
-       
+
         <div class="col-lg-9" style="padding-top: 10px;">
             <div style=" position:relative; top:40px; border-style: groove;">
                 @Html.MvcSiteMap().SiteMapPath()
             </div>
             <div class="row" style="padding-top:70px;">
-                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="col-lg-3 col-md-6 mb-4">
                     <div class="card h-100" style="position: relative;">
                         <a href="#">
                             <img class="card-img-top" src="@Url.GraphicsFilePath(Model.Product.GraphicFileName)" alt="">
@@ -67,54 +68,104 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="col-lg-9 col-md-6 mb-4">
                     <div class="card h-100" style="position: relative;">
                         <div class="card-body">
                             <h4 class="card-title">
                                 @Model.Product.Name
                             </h4>
                             <h3>@Model.Product.Price zł</h3>
-                         
-                          
-                                <label>Rozmiar</label>
-                                <div class="input-box" style="position: relative;">
-                                    <select id="sizes" name="sizeName">
-                                        <option value="primary">Wybierz opcję...</option>
-                                        @foreach (var i in Model.productVariants)
-                                        {
-                                            <option value="@i.Size.size">@i.Size.size</option>
-                                        }
-                                    </select>
-                                </div>
-                                <br />
-                            
 
-                            <label>Kolor</label>
-                            <div class="input-box" style="position: relative;">
-                                <select id="colors" name="colorName">
-                                    <option value="">Wybierz opcję...</option>
-                                    @foreach (var i in Model.productVariants)
-                                    {
-                                        <option value="@i.ProductId">@i.Color.color</option>
-                                    }
+                            @using (Html.BeginForm("AddToShoppingCart", "ShoppingCart", new { sizeId = 1, colorId = 1, productId = Model.Product.ProductId }, FormMethod.Post, null))
+                            {
+                                @Html.DropDownList("sizeId", ViewBag.Sizes as SelectList, "--Wybierz rozmiar--", new { @onchange = "javascript:GetColors(this.value);" })
+                                <select id="colorId" name="colorId" style="width: 200px">
                                 </select>
-                            </div>
-                            <br />
-                            <h7>Opis: @Model.Product.Description</h7>
+                                <input type="submit" value="Show" />
+                            }
+
+
+
+
+                            <br /><br />
+
+
                         </div>
+                        <br />
+                        <h7>Opis: @Model.Product.Description</h7>
+
+
+
+
+
                     </div>
                 </div>
             </div>
-
-
-            <!-- /.row -->
-
         </div>
-        <!-- /.col-lg-9 -->
+
+
+        <!-- /.row -->
 
     </div>
-    <!-- /.row -->
+    <!-- /.col-lg-9 -->
 
 </div>
+<!-- /.row -->
+        </div>
 <!-- /.container -->
 <script>validation();</script>
+
+<script>
+    function selectedSize(item) {
+        var selValue = item.value;
+        var selText = item.options[item.selectedIndex].innerHTML;
+        $('#sizeIdVal').val(selValue);
+    }
+</script>
+
+<script>
+    function selectedColor(item) {
+        var selValue = item.value;
+        var selText = item.options[item.selectedIndex].innerHTML;
+        $('#colorIdVal').val(selValue);
+    }
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script language="javascript" type="text/javascript">
+    function GetColors(_sizeId) {
+        var procemessage = "<option value='0'>Proszę czekać...</option>";
+        $("#colorId").html(procemessage).show();
+        var url = "@Url.Action("GetColorByChoosedSize","Product")";
+
+        $.ajax({
+            url: url,
+            data: { sizeId: _sizeId, productId: @Model.Product.ProductId},
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>--Wybierz kolor--</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#colorId").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error: " + reponse);
+            }
+        });
+
+    }
+</script>
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#submit").click(function () {
+            document.forms[0].submit();
+            return false;
+        });
+    });
+</script>
+

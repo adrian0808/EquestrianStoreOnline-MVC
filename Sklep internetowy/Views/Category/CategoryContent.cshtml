@@ -25,7 +25,17 @@
             <div style=" position:relative; top:40px; border-style: groove;">
                 @Html.MvcSiteMap().SiteMapPath()
             </div>
-     
+
+            <br><br />
+
+            @using (Html.BeginForm())
+            {
+                <p>
+                    Find by name: @Html.TextBox("searchTerm")
+                    <input type="submit" value="Search" />
+                </p>
+            }
+
             <div class="row" style="padding-top:70px;">
                 @foreach (var i in Model)
                 {

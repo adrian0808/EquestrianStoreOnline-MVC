@@ -3,10 +3,13 @@ using Moq;
 using Sklep_internetowy.Controllers;
 using NUnit.Framework;
 using Sklep_internetowy.DAL;
+using Sklep_internetowy.DAL.Interfaces;
+using Sklep_internetowy.Service.Interfaces;
+
 
 namespace Sklep_internetowy.Tests.Controllers
 {
-    class CategoryControllerTest
+    public class CategoryControllerTest
     {
         private Mock<IProductDbContext> moq1;
         private Mock<IContextServices> moq2;
@@ -21,28 +24,28 @@ namespace Sklep_internetowy.Tests.Controllers
         }
 
         [Test]
-        [TestCase(1)]
-        public void CategoryContent_Should_CallGetProductsForGivenCategoryOnlyOnce(int id)
+        [TestCase(1, "abc")]
+        public void CategoryContent_Should_CallGetProductsForGivenCategoryWithFilterOnlyOnce(int id, string searchTerm)
         {
             //Arrange
             //SetUp
 
             //Act
-            var result = controller.CategoryContent(id);
+            var result = controller.CategoryContent(id, searchTerm);
 
             //Assert
-            moq2.Verify(v => v.GetProductsForGivenCategory(It.IsAny<int>()), Times.Once);
+            moq2.Verify(v => v.GetProductsForGivenCategoryWithFilter(It.IsAny<int>(), It.IsAny<string>()), Times.Once);
         }
 
         [Test]
-        [TestCase(1)]
-        public void CategoryContent_Should_ReturnViewResult(int id)
+        [TestCase(1, "abc")]
+        public void CategoryContent_Should_ReturnViewResult(int id, string searchTerm)
         {
             //Arrange
             //SetUp
 
             //Act
-            var result = controller.CategoryContent(id);
+            var result = controller.CategoryContent(id, searchTerm);
 
             //Assert
             Assert.IsNotNull(result);
@@ -92,6 +95,7 @@ namespace Sklep_internetowy.Tests.Controllers
 
         }
 
+        
         [Test]
         public void BestsellerContent_Should_ReturnViewResult()
         {
@@ -105,6 +109,34 @@ namespace Sklep_internetowy.Tests.Controllers
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ViewResult>(result);
         }
+
+        [Test]
+        public void NewsContent_Should_CallGetProductsWhichAreNewOnlyOnce()
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.NewsContent();
+
+            //Assert
+            moq2.Verify(v => v.GetProductsWhichAreNew(), Times.Once);
+        }
+
+        [Test]
+        public void NewsContent_Should_ReturnViewResult()
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.NewsContent();
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ViewResult>(result);
+        }
+
 
         [Test]
         [TestCase(1)]

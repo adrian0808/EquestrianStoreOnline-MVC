@@ -1,5 +1,7 @@
 ﻿using Sklep_internetowy.DAL;
+using Sklep_internetowy.DAL.Interfaces;
 using Sklep_internetowy.Models;
+using Sklep_internetowy.Service.Interfaces;
 using Sklep_internetowy.View;
 using System;
 using System.Collections.Generic;
