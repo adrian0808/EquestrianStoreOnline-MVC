@@ -12,48 +12,62 @@ namespace Sklep_internetowy.Tests.Controllers
 {
     public class HomeControllerTest
     {
+        private Mock<IProductDbContext> db;
+        private Mock<IContextServices> contextService;
+        HomeController controller;
+
+        [SetUp]
+        public void SetUp()
+        {
+            db = new Mock<IProductDbContext>();
+            contextService = new Mock<IContextServices>();
+            controller = new HomeController(db.Object, contextService.Object);
+        }
         
         [Test]
-        public void HomeIndexTest()
+        public void Index_Should_GetBestsellersAndNewsForMainPageCallOnlyOnce()
         {
             //Arrange
-            var moq1 = new Mock<IProductDbContext>();
-            var moq2 = new Mock<IContextServices>();
-
-            var controller = new HomeController(moq1.Object, moq2.Object);
+            //SetUp
 
             //Act
             var result = controller.Index();
 
             //Assert
-            Assert.IsInstanceOf<ViewResult>(result);
-            moq2.Verify(v => v.GetBestsellersAndNewsForMainPage(), Times.Once);
+            contextService.Verify(v => v.GetBestsellersAndNewsForMainPage(), Times.Once);
         }
 
         [Test]
-        public void About()
+        public void Index_Should_ReturnViewResult()
         {
-            // Arrange
-            HomeController controller = new HomeController();
+            //Arrange
+            //SetUp
 
-            // Act
-            ViewResult result = controller.StaticPages("AboutUs") as ViewResult;
+            //Act
+            var result = controller.Index();
 
-            // Assert
+            //Assert
+            Assert.IsNotNull(result);
             Assert.IsInstanceOf<ViewResult>(result);
         }
 
+
+
         [Test]
-        public void Contact()
+        [TestCase("abc")]
+        public void StaticPages_Should_ReturnViewResult(string name)
         {
-            // Arrange
-            HomeController controller = new HomeController();
+            //Arrange
+            //SetUp
 
             // Act
-            ViewResult result = controller.StaticPages("Contact") as ViewResult;
+            var result = controller.StaticPages(name);
 
             // Assert
             Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ViewResult>(result);
         }
+
+    
     }
 }

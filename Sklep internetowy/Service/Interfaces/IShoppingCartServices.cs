@@ -14,6 +14,7 @@ namespace Sklep_internetowy.Service.Interfaces
         int Remove(int productVariantId);
         decimal GetValueOfShoppingCart();
         int GetCountOfShoppingCartPositions();
+        int GetIdAddedProductVariantToShoppingCart(int sizeId, int colorId, int productId);
         void ClearShoppingCart();
         Order CreateOrder(Order newOrder, string userId);
 

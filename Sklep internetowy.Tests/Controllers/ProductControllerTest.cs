@@ -9,32 +9,68 @@ using Sklep_internetowy.DAL.Interfaces;
 
 namespace Sklep_internetowy.Tests.Controllers
 {
-    class ProductControllerTest
+    public class ProductControllerTest
     {
+        private Mock<IProductDbContext> db;
+        private Mock<IContextServices> service;
+        ProductController controller;
+
+        [SetUp]
+        public void SetUp()
+        {
+            db = new Mock<IProductDbContext>();
+            service = new Mock<IContextServices>();
+            controller = new ProductController(db.Object, service.Object);
+        }
+
         [Test]
         [TestCase(1)]
         public void ProductDetails_Should_CallGetAllDetailsForGivenProductIdOnlyOnce(int id)
         {
             //Arrange
-            var moq1 = new Mock<IProductDbContext>();
-            var moq2 = new Mock<IContextServices>();
-            var controller = new ProductController(moq1.Object, moq2.Object);
+            //SetUp
 
             //Act
             var result = controller.ProductDetails(id);
 
             //Assert
-            moq2.Verify(v => v.GetAllDetailsForGivenProductId(It.IsAny<int>()), Times.Once);
+            service.Verify(v => v.GetAllDetailsForGivenProductId(It.IsAny<int>()), Times.Once);
         }
 
+        [Test]
+        [TestCase(1)]
+        public void ProductDetails_Should_CallGetSizesForGivenProductOnlyOnce(int id)
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.ProductDetails(id);
+
+            //Arrange
+            service.Verify(v => v.GetSizesForGivenProduct(It.IsAny<int>()), Times.Once);
+        }
+
+        [Test]
+        [TestCase(1)]
+        public void ProductDetails_Should_CallGetColorsForGivenProductOnlyOnce(int id)
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.ProductDetails(id);
+
+            //Arrange
+            service.Verify(v => v.GetColorsForGivenProduct(It.IsAny<int>()), Times.Once);
+        }
+ 
         [Test]
         [TestCase(1)]
         public void ProductDetails_Should_ReturnViewResult(int id)
         {
             //Arrange
-            var moq1 = new Mock<IProductDbContext>();
-            var moq2 = new Mock<IContextServices>();
-            var controller = new ProductController(moq1.Object, moq2.Object);
+            //SetUp
 
             //Act
             var result = controller.ProductDetails(id);
@@ -45,26 +81,52 @@ namespace Sklep_internetowy.Tests.Controllers
         }
 
         [Test]
+        [TestCase(1, 1)]
+        public void GetColorForSelectList_Should_CallGetColorsForGivenSizeOnlyOnce(int sizeId, int productId)
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.GetColorForSelectList(sizeId, productId);
+
+            //Assert
+            service.Verify(v => v.GetColorsForGivenSize(It.IsAny<int>(), It.IsAny<int>()), Times.Once);
+        }
+
+        [Test]
+        [TestCase(1, 1)]
+        public void GetColorByChoosedSize_Should_ReturnJsonResult(int sizeId, int productId)
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.GetColorForSelectList(sizeId, productId);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<JsonResult>(result);
+        }
+
+        [Test]
         public void MainCategoriesMenu_Should_CallGetAllMainCategoriesOnlyOnce()
         {
             //Arrange
-            var automoq = new AutoMoqer();
-            var controller = automoq.Create<ProductController>();
-            var moq1 = automoq.GetMock<IContextServices>();
+            //SetUp
 
             //Act
             var result = controller.MainCategoriesMenu();
 
             //Assert
-            moq1.Verify(v => v.GetAllMainCategories(), Times.Once);
+            service.Verify(v => v.GetAllMainCategories(), Times.Once);
         }
 
         [Test]
         public void MainCategoriesMenu_Should_ReturnPartialViewResult()
         {
             //Arrange
-            var automoq = new AutoMoqer();
-            var controller = automoq.Create<ProductController>();
+            //SetUp
 
             //Act
             var result = controller.MainCategoriesMenu();
@@ -74,6 +136,34 @@ namespace Sklep_internetowy.Tests.Controllers
             Assert.IsInstanceOf<PartialViewResult>(result);
         }
 
+        [Test]
+        [TestCase(1)]
+        public void CategoriesMenu_Should_CallGetCategoriesForGivenMainCategoryOnlyOnce(int mainCategoryId)
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.CategoriesMenu(mainCategoryId);
+
+            //Assert
+            service.Verify(v => v.GetCategoriesForGivenMainCategory(It.IsAny<int>()), Times.Once);
+        }
+
+        [Test]
+        [TestCase(1)]
+        public void CategoriesMenu_Should_ReturnPartialViewResult(int mainCategoryId)
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.CategoriesMenu(mainCategoryId);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<PartialViewResult>(result);
+        }
 
     }
 }

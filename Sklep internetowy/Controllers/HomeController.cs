@@ -14,23 +14,23 @@ namespace Sklep_internetowy.Controllers
     public class HomeController : Controller
     {
         private IProductDbContext db;
-        private IContextServices cs;
+        private IContextServices service;
 
-        public HomeController(IProductDbContext _db, IContextServices _cs)
+        public HomeController(IProductDbContext db, IContextServices service)
         {
-            db = _db;
-            cs = _cs;
+            this.db = db;
+            this.service = service;
         }
 
         public HomeController()
         {
             db = new ProductDbContext();
-            cs = new ContextServices();
+            service = new ContextServices();
         }
 
         public ActionResult Index()
         {      
-            return View(cs.GetBestsellersAndNewsForMainPage());
+            return View(service.GetBestsellersAndNewsForMainPage());
         }
 
         public ActionResult StaticPages(string name)
@@ -41,7 +41,7 @@ namespace Sklep_internetowy.Controllers
         [ChildActionOnly]
         public ActionResult MainCategoriesMenu()
         {      
-            return PartialView("_MainCategoriesMenu", cs.GetAllMainCategories());
+            return PartialView("_MainCategoriesMenu", service.GetAllMainCategories());
         }
 
 

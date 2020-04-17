@@ -8,9 +8,7 @@ namespace Sklep_internetowy.View
 {
     public class ProductViewModel
     {
-        public IEnumerable<ProductVariant> productVariants { get; set; }
         public Product Product { get; set; }
-      
-
+        public OptionalAttributes OptionalAttributes { get; set; }
     }
 }

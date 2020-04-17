@@ -76,16 +76,22 @@
                             </h4>
                             <h3>@Model.Product.Price zł</h3>
 
+
                             @using (Html.BeginForm("AddToShoppingCart", "ShoppingCart", new { sizeId = 1, colorId = 1, productId = Model.Product.ProductId }, FormMethod.Post, null))
                             {
-                                @Html.DropDownList("sizeId", ViewBag.Sizes as SelectList, "--Wybierz rozmiar--", new { @onchange = "javascript:GetColors(this.value);" })
-                                <select id="colorId" name="colorId" style="width: 200px">
-                                </select>
+                                if (Model.OptionalAttributes.IsSize == true && Model.OptionalAttributes.IsColor == true)
+                                {
+                                    @Html.DropDownList("sizeId", ViewBag.Sizes as SelectList, "--Wybierz rozmiar--", new { @onchange = "javascript:GetColors(this.value);" })
+                                    <select id="colorId" name="colorId" style="width: 200px">
+                                    </select>
+                                }
+                                else
+                                {
+                                    @Html.DropDownList("colorId", ViewBag.Colors as SelectList, "--Wybierz kolor--")
+                                }
+
                                 <input type="submit" value="Show" />
                             }
-
-
-
 
                             <br /><br />
 
@@ -93,9 +99,6 @@
                         </div>
                         <br />
                         <h7>Opis: @Model.Product.Description</h7>
-
-
-
 
 
                     </div>
@@ -136,7 +139,7 @@
     function GetColors(_sizeId) {
         var procemessage = "<option value='0'>Proszę czekać...</option>";
         $("#colorId").html(procemessage).show();
-        var url = "@Url.Action("GetColorByChoosedSize","Product")";
+        var url = "@Url.Action("GetColorForSelectList","Product")";
 
         $.ajax({
             url: url,

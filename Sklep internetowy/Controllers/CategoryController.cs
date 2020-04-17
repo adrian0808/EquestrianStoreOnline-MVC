@@ -14,51 +14,51 @@ namespace Sklep_internetowy.Controllers
     public class CategoryController : Controller
     {
         IProductDbContext db;
-        IContextServices cs;
+        IContextServices service;
 
-        public CategoryController(IProductDbContext db_, IContextServices cs_)
+        public CategoryController(IProductDbContext db, IContextServices service)
         {
-            db = db_;
-            cs = cs_;
+            this.db = db;
+            this.service = service;
         }
 
         public CategoryController()
         {
             db = new ProductDbContext();
-            cs = new ContextServices();
+            service = new ContextServices();
         }
 
         public ActionResult MainCategoryContent(int idMainCategory, string searchTerm)
         {
 
-            return View(cs.GetProductsForGivenMainCategoryWithFilter(idMainCategory, searchTerm));
+            return View(service.GetProductsForGivenMainCategoryWithFilter(idMainCategory, searchTerm));
         }
 
         public ActionResult CategoryContent(int idCategory, string searchTerm)
         {
-            return View(cs.GetProductsForGivenCategoryWithFilter(idCategory, searchTerm));
+            return View(service.GetProductsForGivenCategoryWithFilter(idCategory, searchTerm));
         }
 
         public ActionResult BestsellerContent()
         {
-            return View(cs.GetProductsWhichAreBestsellers());
+            return View(service.GetProductsWhichAreBestsellers());
         }
 
         public ActionResult NewsContent()
         {
-            return View(cs.GetProductsWhichAreNew());
+            return View(service.GetProductsWhichAreNew());
         }
 
         [ChildActionOnly]
         public ActionResult CategoriesMenu(int idMainCategory)
         {
-            return PartialView("_CategoriesMenu", cs.GetCategoriesForGivenMainCategory(idMainCategory));
+            return PartialView("_CategoriesMenu", service.GetCategoriesForGivenMainCategory(idMainCategory));
         }
 
         [ChildActionOnly]
         public ActionResult MainCategoriesMenu()
         {
-            return PartialView("_MainCategoriesMenu", cs.GetAllMainCategories());
+            return PartialView("_MainCategoriesMenu", service.GetAllMainCategories());
         }
     }
 

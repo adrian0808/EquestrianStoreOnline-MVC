@@ -15,93 +15,152 @@
         </div>
 
         <div class="col-lg-9" style="padding-top: 10px;">
+            <div style=" position:relative; top:30px; border-style: groove;">
+                @Html.MvcSiteMap().SiteMapPath()
+            </div>
 
             <div class="px-4 px-lg-0">
 
                 <div class="pb-5">
+
                     <div class="container">
+
                         <div class="row">
-                            <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
 
-                                <!-- Shopping cart table -->
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" class="border-0 bg-light">
-                                                    <div class="p-2 px-3 text-uppercase">Product</div>
-                                                </th>
-                                                <th scope="col" class="border-0 bg-light">
-                                                    <div class="py-2 text-uppercase">Price</div>
-                                                </th>
-                                                <th scope="col" class="border-0 bg-light">
-                                                    <div class="py-2 text-uppercase">Quantity</div>
-                                                </th>
-                                                <th scope="col" class="border-0 bg-light">
-                                                    <div class="py-2 text-uppercase">Remove</div>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var shoppingCartPosition in Model.ShoppingCartPositions)
-                                            {
-                                                <tr id="shoppingCart-row-@shoppingCartPosition.ProductVariant.ProductVariantId">
-                                                    <th scope="row" class="border-0">
-                                                        <div class="p-2">
-                                                            <img src="@Url.GraphicsFilePath(shoppingCartPosition.ProductVariant.Product.GraphicFileName)" alt="" width="70" class="img-fluid rounded shadow-sm">
-                                                            <div class="ml-3 d-inline-block align-middle">
-                                                                <h5 class="mb-0"> <a href="@Url.Action("ProductDetails", "Product", new { id = shoppingCartPosition.ProductVariant.Product.ProductId })" class="text-dark d-inline-block align-middle">@shoppingCartPosition.ProductVariant.Product.Name @shoppingCartPosition.ProductVariant.Product.Brand.brand, @shoppingCartPosition.ProductVariant.Product.Name</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: Watches</span>
-                                                            </div>
-                                                        </div>
+
+
+
+
+                            @if (Model.ShoppingCartPositions.Count > 0)
+                            {
+                                <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5" id="order-window">
+
+                                    <!-- Shopping cart table -->
+
+                                    <div class="table-responsive">
+
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" class="border-0 bg-light">
+                                                        <div class="py-2 text-uppercase"></div>
                                                     </th>
-                                                    <td class="border-0 align-middle"><strong>@shoppingCartPosition.ProductVariant.Product.Price zł</strong></td>
-                                                    <td class="border-0 align-middle"><strong><span id="shoppingCart-quantity-@shoppingCartPosition.ProductVariant.ProductId">@shoppingCartPosition.Quantity</span></strong></td>
-                                                    <td class="border-0 align-middle"><a href="#" class="removeProduct" data-id="@shoppingCartPosition.ProductVariant.ProductVariantId"><i class="fa fa-trash"></i></a></td>
+                                                    <th scope="col" class="border-0 bg-light">
+                                                        <div class="p-2 px-3 text-uppercase">Nazwa produktu</div>
+                                                    </th>
+                                                    <th scope="col" class="border-0 bg-light">
+                                                        <div class="py-2 text-uppercase">Cena</div>
+                                                    </th>
+                                                    <th scope="col" class="border-0 bg-light">
+                                                        <div class="py-2 text-uppercase">Ilość</div>
+                                                    </th>
+                                                    <th scope="col" class="border-0 bg-light">
+                                                        <div class="py-2 text-uppercase">Usuń</div>
+                                                    </th>
                                                 </tr>
-                                            }
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var shoppingCartPosition in Model.ShoppingCartPositions)
+                                                {
+                                                    <tr id="shoppingCart-row-@shoppingCartPosition.ProductVariant.ProductVariantId">
+                                                        <td class="border-0 align-middle"><img src="@Url.GraphicsFilePath(shoppingCartPosition.ProductVariant.Product.GraphicFileName)" alt="" width="70" class="img-fluid rounded shadow-sm"></td>
+                                                        <th scope="row" class="border-0">
+                                                            <div class="ml-3 d-inline-block align-middle">
+                                                                <h7 class="mb-0">
+                                                                    <a href="@Url.Action("ProductDetails", "Product", new { id = shoppingCartPosition.ProductVariant.Product.ProductId })" class="text-dark d-inline-block align-middle">@shoppingCartPosition.ProductVariant.Product.Brand.brand, @shoppingCartPosition.ProductVariant.Product.Name</a>
+                                                                    @if (shoppingCartPosition.ProductVariant.SizeId != 1)
+                                                                    {
+                                                                        <span class="text-muted font-weight-normal font-italic d-block">Rozmiar: @shoppingCartPosition.ProductVariant.Size.size</span>
+                                                                    }
+                                                                    @if (shoppingCartPosition.ProductVariant.ColorId != 0)
+                                                                    {
+                                                                        <span class="text-muted font-weight-normal font-italic d-block">Kolor: @shoppingCartPosition.ProductVariant.Color.color</span>
+                                                                    }
+                                                                </h7>
+                                                            </div>
+                                                        </th>
 
-                                        </tbody>
-                                    </table>
+                                                        <td class="border-0 align-middle"><strong>@shoppingCartPosition.ProductVariant.Product.Price zł</strong></td>
+                                                        <td class="border-0 align-middle"><strong><span id="shoppingCart-quantity-@shoppingCartPosition.ProductVariant.ProductVariantId">@shoppingCartPosition.Quantity</span></strong></td>
+                                                        <td class="border-0 align-middle"><a href="#" class="removeProduct" data-id="@shoppingCartPosition.ProductVariant.ProductVariantId"><img src="../Content/Images/shoppingCartRemove.png" width="30" height="30" /></a></td>
+                                                    </tr>
+                                                }
+
+
+
+
+
+
+
+                                            </tbody>
+                                        </table>
+
+
+
+
+
+
+                                    </div>
+
+
+
+                                    <!-- End -->
+
                                 </div>
-                                <!-- End -->
+                            }
+
+
+                            @if (Model.ShoppingCartPositions.Count == 0)
+                            {
+                                <div style="margin-top:60px;">
+                                    <h4><span class="text-muted font-weight-normal font-italic d-block">Koszyk jest pusty!</span></h4>
+                                </div>
+                            }
+
+                            <div style="margin-top:60px;">
+                                <h4><span class="text-muted font-weight-normal font-italic d-block" id="empty-shopping-cart" style="visibility: hidden;">Koszyk jest pusty!</span></h4>
                             </div>
+
                         </div>
 
-                        <div class="row py-5 p-4 bg-white rounded shadow-sm">
-                            <div class="col-lg-6">
-                                <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Coupon code</div>
-                                <div class="p-4">
-                                    <p class="font-italic mb-4">If you have a coupon code, please enter it in the box below</p>
-                                    <div class="input-group mb-4 border rounded-pill p-2">
-                                        <input type="text" placeholder="Apply coupon" aria-describedby="button-addon3" class="form-control border-0">
-                                        <div class="input-group-append border-0">
-                                            <button id="button-addon3" type="button" class="btn btn-dark px-4 rounded-pill"><i class="fa fa-gift mr-2"></i>Apply coupon</button>
+
+                        @if (Model.ShoppingCartPositions.Count > 0)
+                        {
+                            <div class="row py-5 p-4 bg-white rounded shadow-sm" id="payment-window">
+                                <div class="col-lg-6">
+                                    <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Coupon code</div>
+                                    <div class="p-4">
+                                        <p class="font-italic mb-4">If you have a coupon code, please enter it in the box below</p>
+                                        <div class="input-group mb-4 border rounded-pill p-2">
+                                            <input type="text" placeholder="Apply coupon" aria-describedby="button-addon3" class="form-control border-0">
+                                            <div class="input-group-append border-0">
+                                                <button id="button-addon3" type="button" class="btn btn-dark px-4 rounded-pill"><i class="fa fa-gift mr-2"></i>Apply coupon</button>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Instructions for seller</div>
+                                    <div class="p-4">
+                                        <p class="font-italic mb-4">If you have some information for the seller you can leave them in the box below</p>
+                                        <textarea name="" cols="30" rows="2" class="form-control"></textarea>
+                                    </div>
                                 </div>
-                                <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Instructions for seller</div>
-                                <div class="p-4">
-                                    <p class="font-italic mb-4">If you have some information for the seller you can leave them in the box below</p>
-                                    <textarea name="" cols="30" rows="2" class="form-control"></textarea>
+                                <div class="col-lg-6">
+                                    <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
+                                    <div class="p-4">
+                                        <p class="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
+                                        <ul class="list-unstyled mb-4">
+                                            <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong><span id="shopping-cart-total-price-no-shipment">@Model.TotalPrice zł</span></strong></li>
+                                            <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping and handling</strong><strong>0 zł</strong></li>
+                                            <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Tax</strong><strong>0 zł</strong></li>
+                                            <li class="d-flex justify-content-between py-3 border-bottom">
+                                                <strong class="text-muted">Total</strong>
+                                                <h5 class="font-weight-bold"><span id="shopping-cart-total-price-shipment">@Model.TotalPrice zł</span></h5>
+                                            </li>
+                                        </ul><a href="#" class="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
-                                <div class="p-4">
-                                    <p class="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
-                                    <ul class="list-unstyled mb-4">
-                                        <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong>$390.00</strong></li>
-                                        <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping and handling</strong><strong>$10.00</strong></li>
-                                        <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Tax</strong><strong>$0.00</strong></li>
-                                        <li class="d-flex justify-content-between py-3 border-bottom">
-                                            <strong class="text-muted">Total</strong>
-                                            <h5 class="font-weight-bold">$400.00</h5>
-                                        </li>
-                                    </ul><a href="#" class="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
-                                </div>
-                            </div>
-                        </div>
-
+                        }
                     </div>
                 </div>
             </div>
@@ -110,3 +169,42 @@
 
     </div>
 </div>
+
+@section Scripts{
+    @System.Web.Optimization.Scripts.Render("~/bundles/JqueryAndJqueryui")
+
+    <script type="text/javascript">
+        $(function () {
+            $(".removeProduct").click(function () {
+
+                var recordToRemove = $(this).attr("data-id");
+
+                if (recordToRemove != '') {
+                    $.post("/ShoppingCart/RemoveFromShoppingCart", { "productVariantId": recordToRemove },
+                        function (response) {
+                            if (response.RemovePositionQuantity == 0) {
+                                $('#shoppingCart-row-' + response.RemovePositionId).fadeOut('slow', function () {
+                                    if (response.ShoppingCartPositionsQuantity == 0) {
+                                        $("#payment-window").hide();
+                                        $("#order-window").hide();
+                                        $("#empty-shopping-cart").css('visibility', 'visible');
+                                    }
+                                });
+                            } else {
+                                $('#shoppingCart-quantity-' + response.RemovePositionId).text(response.RemovePositionQuantity);
+                            }
+
+                            $('#shopping-cart-total-price-shipment').text(response.ShoppingCartTotalPrice + " zł");
+                            $('#shopping-cart-total-price-no-shipment').text(response.ShoppingCartTotalPrice + " zł");
+                            $('#shoppingCart-header-quantity-elements').text("(" + response.ShoppingCartPositionsQuantity + ")");
+
+                        });
+                    return false;
+                }
+            });
+        });
+    </script>
+
+
+
+}

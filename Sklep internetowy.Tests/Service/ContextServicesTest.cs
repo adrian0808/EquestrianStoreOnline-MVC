@@ -580,9 +580,10 @@ namespace Sklep_internetowy.Tests.Service
             var result = service.GetAllDetailsForGivenProductId(id);
 
             //Assert
-            Assert.IsInstanceOf<ProductViewModel>(result);
-            Assert.AreEqual(2, result.productVariants.Count());
+            Assert.IsInstanceOf<ProductViewModel>(result);          
         }
+
+
 
 
 

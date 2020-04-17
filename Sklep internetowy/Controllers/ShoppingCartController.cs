@@ -17,23 +17,23 @@ namespace Sklep_internetowy.Controllers
     {
         private IProductDbContext db;
         private ISessionManager session;
+        private IContextServices service;
         private IShoppingCartServices shoppingService;
-        private IContextServices cs;
-
+        
         public ShoppingCartController()
         {
             db = new ProductDbContext();
             session = new SessionManager();
-            shoppingService = new ShoppingCartServices(db, session, new SystemClock());
-            cs = new ContextServices();
+            service = new ContextServices();
+            shoppingService = new ShoppingCartServices();           
         }
 
-        public ShoppingCartController(IProductDbContext db, ISessionManager session, IShoppingCartServices shoppingService, IContextServices cs)
+        public ShoppingCartController(IProductDbContext db, ISessionManager session, IShoppingCartServices shoppingService, IContextServices service)
         {
             this.db = db;
             this.session = session;
+            this.service = service;
             this.shoppingService = shoppingService;
-            this.cs = cs;
         }
 
         public ActionResult Index()
@@ -47,16 +47,32 @@ namespace Sklep_internetowy.Controllers
         [HttpPost]
         public ActionResult AddToShoppingCart(int sizeId, int colorId, int productId)
         {
-            var productVariantId = db.ProductsVariant.Where(p => p.SizeId == sizeId && p.ColorId == colorId && p.ProductId == productId).Select(i => i.ProductVariantId).SingleOrDefault();
+            var productVariantId = shoppingService.GetIdAddedProductVariantToShoppingCart(sizeId, colorId, productId);
             shoppingService.Add(productVariantId);
             return RedirectToAction("Index");
         }
 
-       
+        [HttpPost]
+        public ActionResult RemoveFromShoppingCart(int productVariantId)
+        {
+            int removePositionQuantity = shoppingService.Remove(productVariantId);
+            int shoppingCartPositionsQuantity = shoppingService.GetCountOfShoppingCartPositions();
+            decimal shoppingCartTotalPrice = shoppingService.GetValueOfShoppingCart();
+
+            var result = new ShoppingCartRemoveViewModel() { RemovePositionId = productVariantId, RemovePositionQuantity = removePositionQuantity, ShoppingCartPositionsQuantity = shoppingCartPositionsQuantity, ShoppingCartTotalPrice = shoppingCartTotalPrice };
+            return Json(result);
+        }
+
+        //należy przetestować
+        public int GetQuantityPositionsOfShoppingCart()
+        {
+            return shoppingService.GetCountOfShoppingCartPositions();
+        }
+
         [ChildActionOnly]
         public ActionResult MainCategoriesMenu()
         {
-            return PartialView("_MainCategoriesMenu", cs.GetAllMainCategories());
+            return PartialView("_MainCategoriesMenu", service.GetAllMainCategories());
         }
     }
 }

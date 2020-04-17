@@ -13,50 +13,44 @@ namespace Sklep_internetowy.Controllers
 {
     public class ProductController : Controller
     {
-        IProductDbContext db;
-        IContextServices cs;
+        private readonly IProductDbContext db;
+        private readonly IContextServices service;
 
-        public ProductController(IProductDbContext db_, IContextServices cs_)
+        public ProductController(IProductDbContext db, IContextServices service)
         {
-            db = db_;
-            cs = cs_;
+            this.db = db;
+            this.service = service;
         }
 
         public ProductController()
         {
             db = new ProductDbContext();
-            cs = new ContextServices();
+            service = new ContextServices();
         }
         public ActionResult ProductDetails(int id)
         {
-            ViewBag.Sizes = new SelectList(db.ProductsVariant.Where(p => p.ProductId == id).Select(p => p.Size), "SizeId", "size");
-            ViewBag.Colors = new SelectList(db.ProductsVariant.Where(p => p.ProductId == id).Select(p => p.Color), "ColorId", "color");
-            return View(cs.GetAllDetailsForGivenProductId(id));
+            ViewBag.Sizes = service.GetSizesForGivenProduct(id);
+            ViewBag.Colors = service.GetColorsForGivenProduct(id);
+            return View(service.GetAllDetailsForGivenProductId(id));
         }
-        public JsonResult GetColors(int id)
-        {
-            return Json(new SelectList(db.ProductsVariant.Where(p => p.SizeId == id).Select(p => p.Color), "ColorId", "color"));
-        }
-
-        //Action result for ajax call
+       
         [HttpPost]
-        public ActionResult GetColorByChoosedSize(int sizeId, int productId)
+        public ActionResult GetColorForSelectList(int sizeId, int productId)
         {
-            SelectList colorsList = new SelectList(db.ProductsVariant.Where(p => p.SizeId == sizeId && p.Product.ProductId == productId).Select(c => c.Color).ToList(), "ColorId", "color");
+            SelectList colorsList = service.GetColorsForGivenSize(sizeId, productId);
             return Json(colorsList);
         }
-
 
         [ChildActionOnly]
         public ActionResult MainCategoriesMenu()
         {
-            return PartialView("_MainCategoriesMenu", cs.GetAllMainCategories());
+            return PartialView("_MainCategoriesMenu", service.GetAllMainCategories());
         }
 
         [ChildActionOnly]
         public ActionResult CategoriesMenu(int idMainCategory)
         {
-            return PartialView("_CategoriesMenu", cs.GetCategoriesForGivenMainCategory(idMainCategory));
+            return PartialView("_CategoriesMenu", service.GetCategoriesForGivenMainCategory(idMainCategory));
         }
 
 

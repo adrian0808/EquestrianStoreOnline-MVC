@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using System.Web.Mvc;
 
 namespace Sklep_internetowy.DAL
 {
@@ -134,11 +134,31 @@ namespace Sklep_internetowy.DAL
         public ProductViewModel GetAllDetailsForGivenProductId(int id)
         {
             var product = db.Products.Where(p => p.ProductId == id).Single();
-            var productVariants = db.ProductsVariant.Where(p => p.ProductId == id).ToList();      
-            return new ProductViewModel() { Product = product, productVariants = productVariants};
+            
+            int sizeId = db.ProductsVariant.Where(p => p.SizeId != 1 && p.ProductId == id).Select(s => s.SizeId).FirstOrDefault();
+            bool isSize = (sizeId != 0);
+
+            int colorId = db.ProductsVariant.Where(p => p.ColorId != 0).Select(c => c.ColorId).FirstOrDefault();
+            bool isColor = (colorId != 0);
+
+            OptionalAttributes optionalAttributes = new OptionalAttributes() { IsSize = isSize, IsColor = isColor };
+            return new ProductViewModel() { Product = product, OptionalAttributes = optionalAttributes};
         }
 
-       
+        public SelectList GetSizesForGivenProduct(int idProduct)
+        {
+            return new SelectList(db.ProductsVariant.Where(p => p.ProductId == idProduct).Select(p => p.Size), "SizeId", "size");
+        }
+
+        public SelectList GetColorsForGivenProduct(int idProduct)
+        {
+            return new SelectList(db.ProductsVariant.Where(p => p.ProductId == idProduct).Select(p => p.Color), "ColorId", "color");
+        }
+
+        public SelectList GetColorsForGivenSize(int sizeId, int productId)
+        {
+            return new SelectList(db.ProductsVariant.Where(p => p.SizeId == sizeId && p.Product.ProductId == productId).Select(c => c.Color), "ColorId", "color");
+        }
     }
 
     

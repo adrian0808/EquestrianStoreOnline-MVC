@@ -68,6 +68,7 @@ namespace Sklep_internetowy.Service
             session.Set<List<ShoppingCartPosition>>(Consts.ShoppingCartSessionKey, shoppingCart);
         }
 
+        
         public int Remove(int productVariantId)
         {
             List<ShoppingCartPosition> shoppingCart = GetShoppingCart();
@@ -103,6 +104,11 @@ namespace Sklep_internetowy.Service
         {
             List<ShoppingCartPosition> shoppingCarts = GetShoppingCart();
             return shoppingCarts.Sum(s => s.Quantity);
+        }
+
+        public int GetIdAddedProductVariantToShoppingCart(int sizeId, int colorId, int productId)
+        {
+            return db.ProductsVariant.Where(p => p.SizeId == sizeId && p.ColorId == colorId && p.ProductId == productId).Select(i => i.ProductVariantId).SingleOrDefault();                
         }
 
         public void ClearShoppingCart()

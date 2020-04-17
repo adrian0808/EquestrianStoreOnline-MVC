@@ -9,6 +9,10 @@
         <mvcSiteMapNode title="Product" controller="Product" action="ProductDetails" dynamicNodeProvider ="Sklep_internetowy.Infrastructure.ProductDynamicNodeProvider, Sklep internetowy"/>
       </mvcSiteMapNode>
     </mvcSiteMapNode>
+    <mvcSiteMapNode title="ShoppingCart" controller="ShoppingCart" action="Index">
+      <mvcSiteMapNode title="ShoppingCart" controller="ShoppingCart" action="Payment"/>
+      <mvcSiteMapNode title="ShoppingCart" controller="ShoppingCart" action="ConfirmOrder"/>
+    </mvcSiteMapNode>
   </mvcSiteMapNode>
 
 

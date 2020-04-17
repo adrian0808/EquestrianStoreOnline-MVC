@@ -40,7 +40,8 @@
                         <a class="nav-link" href="@Url.Action("StaticPages", "Home", new { name = "Contact" })">Kontakt<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="@Url.Action("Index", "ShoppingCart")"><img src="../Content/Images/koszyk_white.png" /><span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="@Url.Action("Index", "ShoppingCart")"><img src="../Content/Images/koszyk_white.png" /><span id="shoppingCart-header-quantity-elements">(@Html.Action("GetQuantityPositionsOfShoppingCart", "ShoppingCart"))</span></a>
+                        
                     </li>
                 </ul>
             </div>
