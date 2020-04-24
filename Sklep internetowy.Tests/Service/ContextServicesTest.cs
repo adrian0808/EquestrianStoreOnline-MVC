@@ -18,6 +18,7 @@ namespace Sklep_internetowy.Tests.Service
     {
         private Mock<ICacheProvider> mockCache;
         private Mock<IClock> mockClock;
+
         [SetUp]
         public void SetUp()
         {
@@ -96,8 +97,7 @@ namespace Sklep_internetowy.Tests.Service
             Assert.IsInstanceOf<HomeViewModel>(result);
             Assert.AreEqual(3, result.Bestsellers.Count());
             Assert.AreEqual(3, result.New.Count());
-            Assert.AreEqual("c", result.New.OrderByDescending(s => s.AddingDate).Select(x => x.Name).First());
-            Assert.AreEqual("a", result.Bestsellers.OrderBy(s => s.Name).Select(x => x.Name).First());
+            Assert.AreEqual("c", result.New.OrderByDescending(s => s.AddingDate).Select(x => x.Name).First());          
         }
 
         [Test]

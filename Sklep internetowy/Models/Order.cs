@@ -17,9 +17,8 @@ namespace Sklep_internetowy.Models
     public class Order
     {
         [Key]
-        public int OrderId { get; set; }
-        //[ForeignKey("User")]
-        //public string UserId { get; set; }
+        public int OrderId { get; set; }       
+        public string UserId { get; set; }
         
         [Required(ErrorMessage = "Enter firstname")]
         [StringLength(50)]
@@ -43,7 +42,6 @@ namespace Sklep_internetowy.Models
 
         [Required(ErrorMessage = "Enter phone number")]
         [StringLength(20)]
-        [RegularExpression(@"^(\+[0-9]{9})$", ErrorMessage = "Phone number format is invalid!")]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Enter email")]
@@ -60,6 +58,8 @@ namespace Sklep_internetowy.Models
         public decimal Price { get; set; }
 
         public virtual ICollection<OrderPosition> OrderPositions { get; set; }
+
+        public virtual ApplicationUser User { get; set; }
 
        
     }

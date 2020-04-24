@@ -31,6 +31,7 @@ namespace Sklep_internetowy.Tests.Controllers
             shoppingService = new Mock<IShoppingCartServices>();
             controller = new ShoppingCartController(db.Object, session.Object, shoppingService.Object, service.Object);
         }
+
         [Test]
         public void Index_Should_CallGetShoppingCartOnlyOnce()
         {
@@ -83,6 +84,146 @@ namespace Sklep_internetowy.Tests.Controllers
 
             //Assert
             shoppingService.Verify(v => v.GetIdAddedProductVariantToShoppingCart(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
+        }
+
+        [Test]
+        [TestCase(1,1,1)]
+        public void AddToShoppingCart_Should_CallAddOnlyOnce(int sizeId, int colorId, int productId)
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.AddToShoppingCart(sizeId, colorId, productId);
+
+            //Assert
+            shoppingService.Verify(v => v.Add(It.IsAny<int>()), Times.Once);
+        }
+
+        [Test]
+        [TestCase(1, 1, 1)]
+        public void AddToShoppingCart_Should_ReturnRedirectToRouteResult(int sizeId, int colorId, int productId)
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.AddToShoppingCart(sizeId, colorId, productId);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<RedirectToRouteResult>(result);
+        }
+
+        [Test]
+        [TestCase(1)]
+        public void RemoveFromShoppingCart_Should_CallRemoveOnlyOnce(int productVariantId)
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.RemoveFromShoppingCart(productVariantId);
+
+            //Assert
+            shoppingService.Verify(v => v.Remove(It.IsAny<int>()), Times.Once);
+        }
+
+        [Test]
+        [TestCase(1)]
+        public void RemoveFromShoppingCart_Should_GetCountOfShoppingCartPositionsOnlyOnce(int productVariantId)
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.RemoveFromShoppingCart(productVariantId);
+
+            //Assert
+            shoppingService.Verify(v => v.GetCountOfShoppingCartPositions(), Times.Once);
+        }
+
+        [Test]
+        [TestCase(1)]
+        public void RemoveFromShoppingCart_Should_GetValueOfShoppingCartsOnlyOnce(int productVariantId)
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.RemoveFromShoppingCart(productVariantId);
+
+            //Assert
+            shoppingService.Verify(v => v.GetValueOfShoppingCart(), Times.Once);
+        }
+
+        [Test]
+        [TestCase(1)]
+        public void RemoveFromShoppingCart_Should_ReturnJsonResult(int productVariantId)
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.RemoveFromShoppingCart(productVariantId);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<JsonResult>(result);
+        }
+
+        [Test]
+        public void GetQuantityPositionsOfShoppingCart_Should_CallGetCountOfShoppingCartPositionsOnlyOnce()
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.GetQuantityPositionsOfShoppingCart();
+
+            //Asert
+            shoppingService.Verify(v => v.GetCountOfShoppingCartPositions(), Times.Once);
+        }
+
+        [Test]
+        public void GetQuantityPositionsOfShoppingCart_Should_ReturnInt()
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.GetQuantityPositionsOfShoppingCart();
+
+            //Asert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<int>(result);
+        }
+
+        [Test]
+        public void MainCategoriesMenu_Should_CallGetAllMainCategoriesOnlyOnce()
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.MainCategoriesMenu();
+
+            //Assert
+            service.Verify(v => v.GetAllMainCategories(), Times.Once);
+        }
+
+        [Test]
+        public void MainCategoriesMenu_Should_ReturnPartialView()
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.MainCategoriesMenu();
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<PartialViewResult>(result);
         }
 
 

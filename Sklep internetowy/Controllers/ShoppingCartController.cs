@@ -1,4 +1,7 @@
-﻿using Sklep_internetowy.DAL;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Sklep_internetowy.App_Start;
+using Sklep_internetowy.DAL;
 using Sklep_internetowy.DAL.Interfaces;
 using Sklep_internetowy.Infrastructure;
 using Sklep_internetowy.Models;
@@ -8,6 +11,7 @@ using Sklep_internetowy.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -19,13 +23,28 @@ namespace Sklep_internetowy.Controllers
         private ISessionManager session;
         private IContextServices service;
         private IShoppingCartServices shoppingService;
-        
+        private ApplicationUserManager _userManager;
+        private ApplicationSignInManager _signInManager;
+
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
         public ShoppingCartController()
         {
             db = new ProductDbContext();
             session = new SessionManager();
             service = new ContextServices();
-            shoppingService = new ShoppingCartServices();           
+            shoppingService = new ShoppingCartServices();
         }
 
         public ShoppingCartController(IProductDbContext db, ISessionManager session, IShoppingCartServices shoppingService, IContextServices service)
@@ -36,6 +55,7 @@ namespace Sklep_internetowy.Controllers
             this.shoppingService = shoppingService;
         }
 
+        [HttpGet]
         public ActionResult Index()
         {
             List<ShoppingCartPosition> shoppingCartPositions = shoppingService.GetShoppingCart();
@@ -63,7 +83,58 @@ namespace Sklep_internetowy.Controllers
             return Json(result);
         }
 
-        //należy przetestować
+        [HttpGet]
+        public async Task<ActionResult> PayForOrder()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var order = new Order()
+                {
+                    Firstname = user.UserData.Firstname,
+                    Lastname = user.UserData.Lastname,
+                    Adress = user.UserData.Adress,
+                    City = user.UserData.City,
+                    ZipCode = user.UserData.ZipCode,
+                    PhoneNumber = user.UserData.Phone,
+                    Email = user.UserData.Email
+                };
+                return View(order);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account", new { returnUrl = Url.Action("PayForOrder", "ShoppingCart") });
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> PayForOrder(Order order)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = User.Identity.GetUserId();
+                var newOrder = shoppingService.CreateOrder(order, userId);
+
+                var user = await UserManager.FindByIdAsync(userId);
+                TryUpdateModel(user.UserData);
+                await UserManager.UpdateAsync(user);
+
+                shoppingService.ClearShoppingCart();
+
+                return RedirectToAction("ConfirmOrder", "ShoppingCart");
+            }
+            else
+            {
+                return View(order);
+            }
+        }
+
+        public ActionResult ConfirmOrder()
+        {
+            return View();
+        }
+
         public int GetQuantityPositionsOfShoppingCart()
         {
             return shoppingService.GetCountOfShoppingCartPositions();

@@ -11,11 +11,11 @@ namespace Sklep_internetowy.Service
 {
     public class ShoppingCartServices : IShoppingCartServices
     {
-        private IProductDbContext db;
+        private ProductDbContext db;
         private ISessionManager session;
         private IClock clock;
 
-        public ShoppingCartServices(IProductDbContext db, ISessionManager session, IClock clock)
+        public ShoppingCartServices(ProductDbContext db, ISessionManager session, IClock clock)
         {
             this.db = db;
             this.session = session;
@@ -120,16 +120,14 @@ namespace Sklep_internetowy.Service
         {
             List<ShoppingCartPosition> shoppingCarts = GetShoppingCart();
             newOrder.AddingDate = clock.Now;
-            //newOrder.userId = userId;
+            newOrder.UserId = userId;
 
-            //db.Order.Add(newOrder);
-
+            db.Orders.Add(newOrder);
+            
             if (newOrder.OrderPositions == null)
             {
                 newOrder.OrderPositions = new List<OrderPosition>();
             }
-
-           
 
             foreach(var shoppingCartElement in shoppingCarts)
             {
@@ -144,7 +142,7 @@ namespace Sklep_internetowy.Service
             }
 
             newOrder.Price = GetValueOfShoppingCart();
-            //db.SavesChanges();
+            db.SaveChanges();
             return newOrder;
         }
 

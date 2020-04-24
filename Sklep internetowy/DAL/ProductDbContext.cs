@@ -1,5 +1,6 @@
 namespace Sklep_internetowy
 {
+    using Microsoft.AspNet.Identity.EntityFramework;
     using Sklep_internetowy.DAL.Interfaces;
     using Sklep_internetowy.Models;
     using System;
@@ -8,15 +9,12 @@ namespace Sklep_internetowy
     using System.Linq;
 
 
-    public class ProductDbContext : DbContext, IProductDbContext
+    public class ProductDbContext : IdentityDbContext<ApplicationUser>, IProductDbContext
     {
-
-       
+      
         public ProductDbContext()
             : base("name=ProductDbContext")
         { }
-
-
 
         static ProductDbContext()
         {
@@ -31,6 +29,11 @@ namespace Sklep_internetowy
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
 
+        public static ProductDbContext Create()
+        {
+            return new ProductDbContext();
+        }
+
         public IDbSet<Product> Products { get; set; }
         public IDbSet<Category> Categories { get; set; }
         public IDbSet<MainCategory> MainCategories { get; set; }
@@ -40,6 +43,7 @@ namespace Sklep_internetowy
         public IDbSet<Brand> Brands { get; set; }
         public IDbSet<Gender> Genders { get; set; }
         public IDbSet<ProductVariant> ProductsVariant { get; set; }
+        public IDbSet<Order> Orders { get; set; }
     }
 
     

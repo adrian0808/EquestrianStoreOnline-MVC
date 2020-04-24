@@ -19,6 +19,7 @@ namespace Sklep_internetowy.DAL.Interfaces
         IDbSet<Brand> Brands { get; }
         IDbSet<Gender> Genders { get; }
         IDbSet<ProductVariant> ProductsVariant { get; }
+        IDbSet<Order> Orders { get; }
     }
 
 }

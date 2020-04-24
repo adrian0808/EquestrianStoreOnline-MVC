@@ -1,0 +1,77 @@
+﻿@model Sklep_internetowy.ViewModels.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/login.css" />
+</head>
+
+
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-3">
+            @Html.Action("MainCategoriesMenu", "Home")
+        </div>
+        <!-- /.col-lg-3 -->
+
+        <div class="col-lg-9">
+
+            <div class="panel panel-success" style="margin-top:60px;">
+                <div class="panel-heading text-center"><h4>Logowanie</h4></div>
+                <div class="panel-body">
+                    @using (Html.BeginForm("Login", "Account"))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                        <div class="form-group position-relative">
+                            <label>Email:</label>
+                            @Html.TextBoxFor(o => o.Email, new { @class = "form-control" })
+                            <span class="position-absolute" style="top: 70px; left:0px; font-size:12px; color:red;">@Html.ValidationMessageFor(o => o.Email)</span>
+                        </div>
+                        <div class="form-group position-relative" style="margin-top:20px;">
+                            <label>Hasło:</label>
+                            @Html.PasswordFor(o => o.Password, new { @class = "form-control" })
+                            <span class="position-absolute" style="top: 70px; left:0px; font-size:12px; color:red;">@Html.ValidationMessageFor(o => o.Password)</span>
+                        </div>
+                        <div class="form-group" style="margin-top:20px;">
+                            <label>Zapamiętaj mnie</label>
+                            @Html.CheckBoxFor(o => o.RememberMe, new { @checked = "checked" })
+                        </div>
+                        <div class="text-center">
+                            <input class="btn btn-success" type="submit" value="Zaloguj się" />
+                        </div>
+                        <div id="register-link" class="text-center" style="margin-top:25px;">
+                            Nie masz jeszcze konta? Nic straconego! <a href="@Url.Action("Register", "Account")" class="text-info">Zarejestruj się</a>
+                        </div>
+
+                    }
+                </div>
+            </div>
+
+        </div>
+        <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+</div>
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}
+
+
+
