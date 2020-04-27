@@ -1,0 +1,136 @@
+﻿@model IEnumerable<Sklep_internetowy.Models.Order>
+@using Sklep_internetowy.Infrastructure
+
+@{
+    ViewBag.Title = "OrdersHistory";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+
+<div class="container">
+
+    <div class="px-4 px-lg-0">
+
+        <div class="pb-5">
+            <div class="container">
+                @if (Model.Count() != 0)
+                {
+                    <div class="row">
+
+                        <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+                            <!-- Shopping cart table -->
+                            <div class="table-responsive">
+                                <table class="table">
+                                    @{
+                                        var counter = 0;
+                                    }
+                                    @foreach (var i in Model)
+                                    {
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="border-0 bg-light">
+                                                    <div class="py-2 text-uppercase">Numer zamówienia: @(++counter) </div>
+                                                </th>
+                                                <th scope="col" class="border-0 bg-light">
+                                                    <div class="py-2 text-uppercase">Data: @i.AddingDate</div>
+                                                </th>
+                                                <th scope="col" class="border-0 bg-light">
+                                                    <div class="py-2 text-uppercase">
+                                                        Dane wysyłkowe:<br />
+                                                        @i.Firstname @i.Lastname<br />
+                                                        @i.Adress<br />
+                                                        @i.ZipCode @i.City
+                                                    </div>
+                                                </th>
+                                                <th scope="col" class="border-0 bg-light">
+                                                    <div class="py-2 text-uppercase">Komentarz: @i.Comment</div>
+                                                </th>
+                                                <th scope="col" class="border-0 bg-light">
+                                                    <div class="py-2 text-uppercase">Łączny koszt: @i.Price</div>
+                                                </th>
+                                                <th scope="col" class="border-0 bg-light">
+                                                    <div class="py-2 text-uppercase">Stan zamówienia: </div>
+                                                    @if (ViewBag.isAdmin == true)
+                                                    {
+
+                                                        using (Html.BeginForm("ChangeStateOfOrder", "Manage", new { orderId = i.OrderId, enumState = i.StateOfOrder}, FormMethod.Post))
+                                                        {
+                                                            @Html.HiddenFor(o => i.OrderId)
+                                                            @Html.EnumDropDownListFor(enumState => i.StateOfOrder, new { @class = "form-control ChangeState" })
+                                                            
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(o => i.StateOfOrder)
+                                                    }
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @foreach (var j in i.OrderPositions)
+                                            {
+                                                <tr>
+
+                                                    <td class="border-0 align-middle"><img src="@Url.GraphicsFilePath(j.ProductVariant.Product.GraphicFileName)" alt="" width="70" class="img-fluid rounded shadow-sm"></td>
+                                                    <th scope="row" class="border-0">
+                                                        <div class="p-2 ">
+
+                                                            <div class="ml-3 d-inline-block align-middle">
+                                                                <h6 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">@j.ProductVariant.Product.Name</a></h6>
+                                                                @if (j.ProductVariant.Product.isSize)
+                                                                {
+                                                                    <span class="text-muted font-weight-normal font-italic d-block">Rozmiar: @j.ProductVariant.Size.size</span>
+                                                                }
+                                                                @if (j.ProductVariant.Product.isColor)
+                                                                {
+                                                                    <span class="text-muted font-weight-normal font-italic d-block">Kolor: @j.ProductVariant.Color.color</span>
+                                                                }
+
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <td class="border-0 align-middle"><strong>@j.Quantity x @j.ProductVariant.Product.Price zł</strong></td>
+                                                    <td class="border-0 align-middle"><strong>@j.Price zł</strong></td>
+
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    }
+
+                                </table>
+                            </div>
+                            <!-- End -->
+                        </div>
+
+
+                    </div>
+                }
+                else
+                {
+                    <h3 class="text-center">Brak zamówień!</h3>
+                }
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script>
+    $(".ChangeState").on('change', function (e) {      
+        var f = $(this.form);    
+        var action = f.attr("action");
+        var serializedForm = f.serialize();
+        $.post(action, serializedForm).done(function (data) {          
+          });
+    });
+    </script>
+}

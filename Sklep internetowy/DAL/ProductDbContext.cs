@@ -44,6 +44,7 @@ namespace Sklep_internetowy
         public IDbSet<Gender> Genders { get; set; }
         public IDbSet<ProductVariant> ProductsVariant { get; set; }
         public IDbSet<Order> Orders { get; set; }
+        public IDbSet<OrderPosition> OrderPositions { get; set; }
     }
 
     

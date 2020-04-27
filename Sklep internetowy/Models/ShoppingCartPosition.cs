@@ -11,6 +11,6 @@ namespace Sklep_internetowy.Models
     { 
         public ProductVariant ProductVariant { get; set; }
         public int Quantity { get; set; }
-        public decimal Price { get; set; }
+        public decimal Price { get { return Quantity * ProductVariant.Product.Price; } set { value = Quantity * ProductVariant.Product.Price; } }
     }
 }

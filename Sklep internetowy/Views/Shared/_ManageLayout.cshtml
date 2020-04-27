@@ -24,21 +24,22 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Internetowy Sklep Jeździecki - Radosny Koń</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
                         <a class="nav-link" href="@Url.Action("Index", "Home")">Strona główna<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="@Url.Action("StaticPages", "Home", new { name = "AboutUs" })">O firmie<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="@Url.Action("Index", "Manage")">Moje dane<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="@Url.Action("StaticPages", "Home", new { name = "Contact" })">Kontakt<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="@Url.Action("OrdersHistory", "Manage")">Historia zamówień<span class="sr-only">(current)</span></a>
                     </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
                     @Html.Partial("_LoginPartial")
                     <li class="nav-item active">
                         <a class="nav-link" href="@Url.Action("Index", "ShoppingCart")"><img src="../Content/Images/koszyk_white.png" /><span id="shoppingCart-header-quantity-elements">(@Html.Action("GetQuantityPositionsOfShoppingCart", "ShoppingCart"))</span></a>

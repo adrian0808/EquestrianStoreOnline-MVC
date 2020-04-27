@@ -104,5 +104,8 @@ namespace Sklep_internetowy.App_Start
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
+
+
+        
     }
 }

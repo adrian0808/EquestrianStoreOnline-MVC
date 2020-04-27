@@ -28,9 +28,6 @@
                         <div class="row">
 
 
-
-
-
                             @if (Model.ShoppingCartPositions.Count > 0)
                             {
                                 <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5" id="order-window">
@@ -80,7 +77,7 @@
                                                             </div>
                                                         </th>
 
-                                                        <td class="border-0 align-middle"><strong>@shoppingCartPosition.ProductVariant.Product.Price zł</strong></td>
+                                                        <td class="border-0 align-middle"><strong>@shoppingCartPosition.Price zł</strong></td>
                                                         <td class="border-0 align-middle"><strong><span id="shoppingCart-quantity-@shoppingCartPosition.ProductVariant.ProductVariantId">@shoppingCartPosition.Quantity</span></strong></td>
                                                         <td class="border-0 align-middle"><a href="#" class="removeProduct" data-id="@shoppingCartPosition.ProductVariant.ProductVariantId"><img src="../Content/Images/shoppingCartRemove.png" width="30" height="30" /></a></td>
                                                     </tr>

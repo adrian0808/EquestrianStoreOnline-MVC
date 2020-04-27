@@ -9,6 +9,7 @@ namespace Sklep_internetowy
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+ 
         }     
     }
 }

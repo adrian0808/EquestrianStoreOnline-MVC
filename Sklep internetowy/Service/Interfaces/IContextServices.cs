@@ -24,5 +24,6 @@ namespace Sklep_internetowy.Service.Interfaces
         SelectList GetColorsForGivenProduct(int idProduct);
         SelectList GetColorsForGivenSize(int sizeId, int productId);
 
+
     }
 }

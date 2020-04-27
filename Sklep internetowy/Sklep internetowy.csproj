@@ -292,22 +292,15 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="DAL\Interfaces\IClock.cs" />
     <Compile Include="DAL\Interfaces\IProductDbContext.cs" />
     <Compile Include="DAL\SystemClock.cs" />
-    <Compile Include="Migrations\202004131344248_init.cs" />
-    <Compile Include="Migrations\202004131344248_init.designer.cs">
-      <DependentUpon>202004131344248_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004211304548_adding aspIdentity.cs" />
-    <Compile Include="Migrations\202004211304548_adding aspIdentity.designer.cs">
-      <DependentUpon>202004211304548_adding aspIdentity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004231325064_add Orders.cs" />
-    <Compile Include="Migrations\202004231325064_add Orders.designer.cs">
-      <DependentUpon>202004231325064_add Orders.cs</DependentUpon>
+    <Compile Include="Migrations\202004270952392_init.cs" />
+    <Compile Include="Migrations\202004270952392_init.designer.cs">
+      <DependentUpon>202004270952392_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\OptionalAttributes.cs" />
@@ -348,6 +341,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\ManageViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartRemoveViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartViewModel.cs" />
@@ -500,6 +494,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\ShoppingCart\PayForOrder.cshtml" />
     <Content Include="Views\ShoppingCart\ConfirmOrder.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Shared\_ManageLayout.cshtml" />
+    <Content Include="Views\Manage\OrdersHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -516,14 +513,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202004131344248_init.resx">
-      <DependentUpon>202004131344248_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004211304548_adding aspIdentity.resx">
-      <DependentUpon>202004211304548_adding aspIdentity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004231325064_add Orders.resx">
-      <DependentUpon>202004231325064_add Orders.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202004270952392_init.resx">
+      <DependentUpon>202004270952392_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

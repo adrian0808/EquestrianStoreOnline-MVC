@@ -97,9 +97,10 @@ namespace Sklep_internetowy.Service
         public decimal GetValueOfShoppingCart()
         {
             List<ShoppingCartPosition> shoppingCart = GetShoppingCart();
-            return shoppingCart.Sum(s => s.Price * s.Quantity);
+            return shoppingCart.Sum(s => s.Price);
         }
 
+      
         public int GetCountOfShoppingCartPositions()
         {
             List<ShoppingCartPosition> shoppingCarts = GetShoppingCart();

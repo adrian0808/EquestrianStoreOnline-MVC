@@ -37,7 +37,7 @@ namespace Sklep_internetowy.DAL
         }
 
         public HomeViewModel GetBestsellersAndNewsForMainPage()
-        {      
+        {
             List<Product> news = new List<Product>();
 
             if (cache.isSet(Consts.NewsCacheKey))
@@ -85,7 +85,7 @@ namespace Sklep_internetowy.DAL
         public List<Product> GetProductsForGivenMainCategoryWithFilter(int idMainCategory, string searchTerm)
         {
             List<Product> Products = new List<Product>();
-            
+
             if (!String.IsNullOrEmpty(searchTerm))
             {
                 Products = db.Products.Where(p => p.Name.ToLower().Contains(searchTerm.ToLower()) || p.Brand.brand.ToLower().Contains(searchTerm.ToLower()) && p.Category.MainCategoryId == idMainCategory).ToList();
@@ -93,16 +93,16 @@ namespace Sklep_internetowy.DAL
             }
             else
             {
-                Products = db.Products.Where(p => p.Category.MainCategoryId == idMainCategory).ToList(); 
+                Products = db.Products.Where(p => p.Category.MainCategoryId == idMainCategory).ToList();
                 return Products;
-            }   
+            }
         }
 
         public List<Product> GetProductsForGivenCategoryWithFilter(int idCategory, string searchTerm)
         {
             List<Product> Products = new List<Product>();
-            
-            if(!String.IsNullOrEmpty(searchTerm))
+
+            if (!String.IsNullOrEmpty(searchTerm))
             {
                 Products = db.Products.Where(p => p.CategoryId == idCategory && (p.Name.ToLower().Contains(searchTerm.ToLower()) || p.Brand.brand.ToLower().Contains(searchTerm.ToLower()))).ToList();
                 return Products;
@@ -122,19 +122,18 @@ namespace Sklep_internetowy.DAL
 
         public List<Product> GetProductsWhichAreNew()
         {
-          
             return db.Products.Where(p => (clock.Now.Month - p.AddingDate.Month) == 0 || (p.AddingDate.Day > clock.Now.Day && (clock.Now.Month - p.AddingDate.Month) == 1)).ToList();
         }
 
         public List<Category> GetCategoriesForGivenMainCategory(int idMainCategory)
-        {  
+        {
             return db.Categories.Where(c => c.MainCategory.MainCategoryId == idMainCategory).ToList();
         }
 
         public ProductViewModel GetAllDetailsForGivenProductId(int id)
         {
             var product = db.Products.Where(p => p.ProductId == id).Single();
-            
+
             int sizeId = db.ProductsVariant.Where(p => p.SizeId != 1 && p.ProductId == id).Select(s => s.SizeId).FirstOrDefault();
             bool isSize = (sizeId != 0);
 
@@ -142,7 +141,7 @@ namespace Sklep_internetowy.DAL
             bool isColor = (colorId != 0);
 
             OptionalAttributes optionalAttributes = new OptionalAttributes() { IsSize = isSize, IsColor = isColor };
-            return new ProductViewModel() { Product = product, OptionalAttributes = optionalAttributes};
+            return new ProductViewModel() { Product = product, OptionalAttributes = optionalAttributes };
         }
 
         public SelectList GetSizesForGivenProduct(int idProduct)
@@ -159,6 +158,8 @@ namespace Sklep_internetowy.DAL
         {
             return new SelectList(db.ProductsVariant.Where(p => p.SizeId == sizeId && p.Product.ProductId == productId).Select(c => c.Color), "ColorId", "color");
         }
+
+       
     }
 
     

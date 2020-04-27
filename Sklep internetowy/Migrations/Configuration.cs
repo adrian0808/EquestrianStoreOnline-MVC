@@ -1,5 +1,7 @@
 ﻿namespace Sklep_internetowy.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using Sklep_internetowy.Models;
     using System;
     using System.Collections.Generic;
@@ -243,9 +245,41 @@
                 new Stock() { ProductVariantId = 24, CountOfStock = 9, LastUpdateTime = DateTime.Now},
                 new Stock() { ProductVariantId = 25, CountOfStock = 14, LastUpdateTime = DateTime.Now},
                 new Stock() { ProductVariantId = 26, CountOfStock = 7, LastUpdateTime = DateTime.Now},
-            };                
-        }                     
-    }                         
-}                             
-                              
-                              
+            };
+
+
+
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+
+            const string name = "admin@sklep.pl";
+            const string password = "P@ssw0rd";
+            const string roleName = "Admin";
+
+            var user = userManager.FindByName(name);
+            if (user == null)
+            {
+                user = new ApplicationUser { UserName = name, Email = name, UserData = new UserData() };
+                var result = userManager.Create(user, password);
+            }
+
+            // utworzenie roli Admin jeśli nie istnieje 
+            var role = roleManager.FindByName(roleName);
+            if (role == null)
+            {
+                role = new IdentityRole(roleName);
+                var roleresult = roleManager.Create(role);
+            }
+
+            // dodanie uzytkownika do roli Admin jesli juz nie jest w roli
+            var rolesForUser = userManager.GetRoles(user.Id);
+            if (!rolesForUser.Contains(role.Name))
+            {
+                var result = userManager.AddToRole(user.Id, role.Name);
+            }
+        }
+    }
+}
+
+
+            
