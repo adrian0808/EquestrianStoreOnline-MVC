@@ -7,21 +7,20 @@ using Sklep_internetowy.Models;
 using System.Collections.Generic;
 using Sklep_internetowy.DAL.Interfaces;
 using Sklep_internetowy.Service.Interfaces;
+using Sklep_internetowy.Infrastructure;
 
 namespace Sklep_internetowy.Tests.Controllers
 {
     public class HomeControllerTest
-    {
-        private Mock<IProductDbContext> db;
+    {        
         private Mock<IContextServices> contextService;
         HomeController controller;
 
         [SetUp]
         public void SetUp()
-        {
-            db = new Mock<IProductDbContext>();
+        {         
             contextService = new Mock<IContextServices>();
-            controller = new HomeController(db.Object, contextService.Object);
+            controller = new HomeController(contextService.Object);
         }
         
         [Test]
@@ -32,9 +31,9 @@ namespace Sklep_internetowy.Tests.Controllers
 
             //Act
             var result = controller.Index();
-
+            
             //Assert
-            contextService.Verify(v => v.GetBestsellersAndNewsForMainPage(), Times.Once);
+            contextService.Verify(v => v.GetBestsellersAndNewsForMainPage(), Times.Once);       
         }
 
         [Test]
@@ -68,6 +67,36 @@ namespace Sklep_internetowy.Tests.Controllers
             Assert.IsInstanceOf<ViewResult>(result);
         }
 
-    
+        [Test]
+        public void MainCategoriesMenu_Should_CallGetAllMainCategoriesOnlyOnce()
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.MainCategoriesMenu();
+
+            //Assert
+            contextService.Verify(v => v.GetAllMainCategories(), Times.Once);
+        }
+
+        [Test]
+        public void MainCategoriesMenu_Should_ReturnPartialView()
+        {
+            //Arrange
+            //SetUp
+
+            //Act
+            var result = controller.MainCategoriesMenu();
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<PartialViewResult>(result);
+        }
+
+
+
+
+
     }
 }

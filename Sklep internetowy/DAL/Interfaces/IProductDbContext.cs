@@ -21,6 +21,7 @@ namespace Sklep_internetowy.DAL.Interfaces
         IDbSet<ProductVariant> ProductsVariant { get; }
         IDbSet<Order> Orders { get; }
         IDbSet<OrderPosition> OrderPositions { get; }
+        void SaveChangesWrapped();
     }
 
 }

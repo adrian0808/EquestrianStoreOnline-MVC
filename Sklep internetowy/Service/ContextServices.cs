@@ -24,13 +24,6 @@ namespace Sklep_internetowy.DAL
             clock = _cl;
         }
 
-        public ContextServices()
-        {
-            db = new ProductDbContext();
-            cache = new DefaultCacheProvider();
-            clock = new SystemClock();
-        }
-
         public List<Product> GetProductsForGivenCategory(int idCategory)
         {
             return db.Products.Where(p => p.CategoryId == idCategory).ToList();
@@ -159,8 +152,8 @@ namespace Sklep_internetowy.DAL
             return new SelectList(db.ProductsVariant.Where(p => p.SizeId == sizeId && p.Product.ProductId == productId).Select(c => c.Color), "ColorId", "color");
         }
 
-       
+
     }
 
-    
+
 }

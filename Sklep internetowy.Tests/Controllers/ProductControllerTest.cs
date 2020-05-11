@@ -11,16 +11,15 @@ namespace Sklep_internetowy.Tests.Controllers
 {
     public class ProductControllerTest
     {
-        private Mock<IProductDbContext> db;
+       
         private Mock<IContextServices> service;
         ProductController controller;
 
         [SetUp]
         public void SetUp()
-        {
-            db = new Mock<IProductDbContext>();
+        {          
             service = new Mock<IContextServices>();
-            controller = new ProductController(db.Object, service.Object);
+            controller = new ProductController(service.Object);
         }
 
         [Test]
@@ -96,7 +95,7 @@ namespace Sklep_internetowy.Tests.Controllers
 
         [Test]
         [TestCase(1, 1)]
-        public void GetColorByChoosedSize_Should_ReturnJsonResult(int sizeId, int productId)
+        public void GetColorForSelectList_Should_ReturnJsonResult(int sizeId, int productId)
         {
             //Arrange
             //SetUp
@@ -108,62 +107,6 @@ namespace Sklep_internetowy.Tests.Controllers
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<JsonResult>(result);
         }
-
-        [Test]
-        public void MainCategoriesMenu_Should_CallGetAllMainCategoriesOnlyOnce()
-        {
-            //Arrange
-            //SetUp
-
-            //Act
-            var result = controller.MainCategoriesMenu();
-
-            //Assert
-            service.Verify(v => v.GetAllMainCategories(), Times.Once);
-        }
-
-        [Test]
-        public void MainCategoriesMenu_Should_ReturnPartialViewResult()
-        {
-            //Arrange
-            //SetUp
-
-            //Act
-            var result = controller.MainCategoriesMenu();
-
-            //Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<PartialViewResult>(result);
-        }
-
-        [Test]
-        [TestCase(1)]
-        public void CategoriesMenu_Should_CallGetCategoriesForGivenMainCategoryOnlyOnce(int mainCategoryId)
-        {
-            //Arrange
-            //SetUp
-
-            //Act
-            var result = controller.CategoriesMenu(mainCategoryId);
-
-            //Assert
-            service.Verify(v => v.GetCategoriesForGivenMainCategory(It.IsAny<int>()), Times.Once);
-        }
-
-        [Test]
-        [TestCase(1)]
-        public void CategoriesMenu_Should_ReturnPartialViewResult(int mainCategoryId)
-        {
-            //Arrange
-            //SetUp
-
-            //Act
-            var result = controller.CategoriesMenu(mainCategoryId);
-
-            //Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<PartialViewResult>(result);
-        }
-
+     
     }
 }

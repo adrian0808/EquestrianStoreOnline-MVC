@@ -29,11 +29,6 @@ namespace Sklep_internetowy.Controllers
             this.service = service;
         }
 
-        public ManageController()
-        {
-            this.db = new ProductDbContext();
-            this.service = new ContextServices();
-        }
 
         public enum ManageMessageId
         {
@@ -102,7 +97,7 @@ namespace Sklep_internetowy.Controllers
                 TempData["ViewData"] = ViewData;
                 return RedirectToAction("Index");
             }
-            
+
             var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.CurrentPassword, model.NewPassword);
             if (result.Succeeded)
             {
@@ -167,7 +162,7 @@ namespace Sklep_internetowy.Controllers
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             bool isAdmin = User.IsInRole("Admin");
             ViewBag.isAdmin = isAdmin;
-          
+
             if (user == null)
             {
                 return View("Error");
@@ -190,9 +185,9 @@ namespace Sklep_internetowy.Controllers
 
         [HttpPost]
         public StateOfOrder ChangeStateOfOrder(int orderId, StateOfOrder enumState)
-        { 
+        {
             Order updateOrder = db.Orders.Find(orderId);
-            if(enumState == StateOfOrder.Completed)
+            if (enumState == StateOfOrder.Completed)
             {
                 updateOrder.StateOfOrder = StateOfOrder.InProgress;
             }
@@ -200,7 +195,7 @@ namespace Sklep_internetowy.Controllers
             {
                 updateOrder.StateOfOrder = StateOfOrder.Completed;
             }
-            
+
             db.SaveChanges();
             return updateOrder.StateOfOrder;
         }

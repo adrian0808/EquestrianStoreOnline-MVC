@@ -11,24 +11,18 @@ namespace Sklep_internetowy.Service
 {
     public class ShoppingCartServices : IShoppingCartServices
     {
-        private ProductDbContext db;
+        private IProductDbContext db;
         private ISessionManager session;
         private IClock clock;
 
-        public ShoppingCartServices(ProductDbContext db, ISessionManager session, IClock clock)
+        public ShoppingCartServices(IProductDbContext db, ISessionManager session, IClock clock)
         {
             this.db = db;
             this.session = session;
             this.clock = clock;
         }
 
-        public ShoppingCartServices()
-        {
-            this.db = new ProductDbContext();
-            this.session = new SessionManager();
-            this.clock = new SystemClock();
-        }
-
+       
         public List<ShoppingCartPosition> GetShoppingCart()
         {
             List<ShoppingCartPosition> shoppingCart;
@@ -68,11 +62,11 @@ namespace Sklep_internetowy.Service
             session.Set<List<ShoppingCartPosition>>(Consts.ShoppingCartSessionKey, shoppingCart);
         }
 
-        
+
         public int Remove(int productVariantId)
         {
             List<ShoppingCartPosition> shoppingCart = GetShoppingCart();
-           
+
             if (shoppingCart.Count != 0)
             {
                 ShoppingCartPosition shoppingCartPosition = shoppingCart.Find(s => s.ProductVariant.ProductVariantId == productVariantId);
@@ -100,7 +94,7 @@ namespace Sklep_internetowy.Service
             return shoppingCart.Sum(s => s.Price);
         }
 
-      
+
         public int GetCountOfShoppingCartPositions()
         {
             List<ShoppingCartPosition> shoppingCarts = GetShoppingCart();
@@ -109,7 +103,7 @@ namespace Sklep_internetowy.Service
 
         public int GetIdAddedProductVariantToShoppingCart(int sizeId, int colorId, int productId)
         {
-            return db.ProductsVariant.Where(p => p.SizeId == sizeId && p.ColorId == colorId && p.ProductId == productId).Select(i => i.ProductVariantId).SingleOrDefault();                
+            return db.ProductsVariant.Where(p => p.SizeId == sizeId && p.ColorId == colorId && p.ProductId == productId).Select(i => i.ProductVariantId).SingleOrDefault();
         }
 
         public void ClearShoppingCart()
@@ -124,13 +118,13 @@ namespace Sklep_internetowy.Service
             newOrder.UserId = userId;
 
             db.Orders.Add(newOrder);
-            
+
             if (newOrder.OrderPositions == null)
             {
                 newOrder.OrderPositions = new List<OrderPosition>();
             }
 
-            foreach(var shoppingCartElement in shoppingCarts)
+            foreach (var shoppingCartElement in shoppingCarts)
             {
                 OrderPosition newOrderPosition = new OrderPosition()
                 {
@@ -138,12 +132,12 @@ namespace Sklep_internetowy.Service
                     Quantity = shoppingCartElement.Quantity,
                     Price = shoppingCartElement.Price
                 };
-                
+
                 newOrder.OrderPositions.Add(newOrderPosition);
             }
 
             newOrder.Price = GetValueOfShoppingCart();
-            db.SaveChanges();
+            db.SaveChangesWrapped();
             return newOrder;
         }
 

@@ -5,22 +5,21 @@ using NUnit.Framework;
 using Sklep_internetowy.DAL;
 using Sklep_internetowy.DAL.Interfaces;
 using Sklep_internetowy.Service.Interfaces;
-
+using Sklep_internetowy.Infrastructure;
 
 namespace Sklep_internetowy.Tests.Controllers
 {
     public class CategoryControllerTest
     {
-        private Mock<IProductDbContext> moq1;
-        private Mock<IContextServices> moq2;
+       
+        private Mock<IContextServices> contextService;     
         CategoryController controller;
 
         [SetUp]
         public void SetUp()
         {
-            moq1 = new Mock<IProductDbContext>();
-            moq2 = new Mock<IContextServices>();
-            controller = new CategoryController(moq1.Object, moq2.Object);
+            contextService = new Mock<IContextServices>();
+            controller = new CategoryController(contextService.Object);
         }
 
         [Test]
@@ -34,7 +33,7 @@ namespace Sklep_internetowy.Tests.Controllers
             var result = controller.CategoryContent(id, searchTerm);
 
             //Assert
-            moq2.Verify(v => v.GetProductsForGivenCategoryWithFilter(It.IsAny<int>(), It.IsAny<string>()), Times.Once);
+            contextService.Verify(v => v.GetProductsForGivenCategoryWithFilter(It.IsAny<int>(), It.IsAny<string>()), Times.Once);
         }
 
         [Test]
@@ -43,7 +42,7 @@ namespace Sklep_internetowy.Tests.Controllers
         {
             //Arrange
             //SetUp
-
+            
             //Act
             var result = controller.CategoryContent(id, searchTerm);
 
@@ -63,7 +62,7 @@ namespace Sklep_internetowy.Tests.Controllers
             var result = controller.MainCategoryContent(idMainCategory, searchTerm);
 
             //Assert
-            moq2.Verify(v => v.GetProductsForGivenMainCategoryWithFilter(It.IsAny<int>(), It.IsAny<string>()), Times.Once);
+            contextService.Verify(v => v.GetProductsForGivenMainCategoryWithFilter(It.IsAny<int>(), It.IsAny<string>()), Times.Once);
         }
 
         [Test]
@@ -91,7 +90,7 @@ namespace Sklep_internetowy.Tests.Controllers
             var result = controller.BestsellerContent();
 
             //Assert
-            moq2.Verify(v => v.GetProductsWhichAreBestsellers(), Times.Once);
+            contextService.Verify(v => v.GetProductsWhichAreBestsellers(), Times.Once);
 
         }
 
@@ -120,7 +119,7 @@ namespace Sklep_internetowy.Tests.Controllers
             var result = controller.NewsContent();
 
             //Assert
-            moq2.Verify(v => v.GetProductsWhichAreNew(), Times.Once);
+            contextService.Verify(v => v.GetProductsWhichAreNew(), Times.Once);
         }
 
         [Test]
@@ -149,7 +148,7 @@ namespace Sklep_internetowy.Tests.Controllers
             var result = controller.CategoriesMenu(idCategory);
 
             //Assert
-            moq2.Verify(v => v.GetCategoriesForGivenMainCategory(It.IsAny<int>()), Times.Once);
+            contextService.Verify(v => v.GetCategoriesForGivenMainCategory(It.IsAny<int>()), Times.Once);
         }
 
         [Test]
@@ -167,36 +166,7 @@ namespace Sklep_internetowy.Tests.Controllers
             Assert.IsInstanceOf<PartialViewResult>(result);
         }
 
-        [Test]
-        public void MainCategoriesMenu_Should_CallGetAllMainCategories()
-        {
-            //Arrange
-            //SetUp
-
-            //Act
-            var result = controller.MainCategoriesMenu();
-
-            //Assert
-            moq2.Verify(v => v.GetAllMainCategories(), Times.Once);
-        }
-
-        [Test]
-        public void MainCategoriesMenu_Should_ReturnPartialViewResult()
-        {
-            //Arrange
-            //SetUp
-
-            //Act
-            var result = controller.MainCategoriesMenu();
-
-            //Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<PartialViewResult>(result);
-        }
-
-
-
-
+       
 
     }
 }

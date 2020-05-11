@@ -34,6 +34,11 @@ namespace Sklep_internetowy
             return new ProductDbContext();
         }
 
+        public void SaveChangesWrapped()
+        {
+            base.SaveChanges();
+        }
+
         public IDbSet<Product> Products { get; set; }
         public IDbSet<Category> Categories { get; set; }
         public IDbSet<MainCategory> MainCategories { get; set; }

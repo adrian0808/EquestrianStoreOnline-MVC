@@ -76,8 +76,8 @@ namespace Sklep_internetowy.Tests.Service
                 new Product() { ProductId = 6, Name = "f", isBestseller = true, AddingDate = new DateTime(2020,03,10,18,42,21) },
             }.AsQueryable();
 
-            mockCache.Setup(m => m.Get(It.IsAny<string>())).Returns(ListOfProducts);
-
+            //mockCache.Setup(m => m.Get(It.IsAny<string>())).Returns(ListOfProducts);
+                      
             var mockSet = new Mock<IDbSet<Product>>();
             mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(ListOfProducts.Provider);
             mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(ListOfProducts.Expression);
@@ -89,9 +89,9 @@ namespace Sklep_internetowy.Tests.Service
 
             var service = new ContextServices(mockContext.Object, mockCache.Object, mockClock.Object);
 
-            //Act
+            //Act          
+            
             var result = service.GetBestsellersAndNewsForMainPage();
-
             //Assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<HomeViewModel>(result);

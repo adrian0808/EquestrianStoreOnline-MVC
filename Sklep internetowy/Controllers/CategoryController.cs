@@ -1,5 +1,7 @@
-﻿using Sklep_internetowy.DAL;
+﻿using MvcSiteMapProvider.Caching;
+using Sklep_internetowy.DAL;
 using Sklep_internetowy.DAL.Interfaces;
+using Sklep_internetowy.Infrastructure;
 using Sklep_internetowy.Models;
 using Sklep_internetowy.Service.Interfaces;
 using Sklep_internetowy.View;
@@ -13,20 +15,15 @@ namespace Sklep_internetowy.Controllers
 {
     public class CategoryController : Controller
     {
-        IProductDbContext db;
-        IContextServices service;
+      
+        private IContextServices service;
 
-        public CategoryController(IProductDbContext db, IContextServices service)
+        public CategoryController(IContextServices service)
         {
-            this.db = db;
+         
             this.service = service;
         }
 
-        public CategoryController()
-        {
-            db = new ProductDbContext();
-            service = new ContextServices();
-        }
 
         public ActionResult MainCategoryContent(int idMainCategory, string searchTerm)
         {
@@ -55,11 +52,6 @@ namespace Sklep_internetowy.Controllers
             return PartialView("_CategoriesMenu", service.GetCategoriesForGivenMainCategory(idMainCategory));
         }
 
-        [ChildActionOnly]
-        public ActionResult MainCategoriesMenu()
-        {
-            return PartialView("_MainCategoriesMenu", service.GetAllMainCategories());
-        }
     }
 
 }

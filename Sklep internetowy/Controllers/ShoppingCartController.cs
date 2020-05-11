@@ -19,12 +19,11 @@ namespace Sklep_internetowy.Controllers
 {
     public class ShoppingCartController : Controller
     {
-        private IProductDbContext db;
-        private ISessionManager session;
-        private IContextServices service;
+
         private IShoppingCartServices shoppingService;
+        private IContextServices service;
         private ApplicationUserManager _userManager;
-        private ApplicationSignInManager _signInManager;
+
 
 
         public ApplicationUserManager UserManager
@@ -39,20 +38,11 @@ namespace Sklep_internetowy.Controllers
             }
         }
 
-        public ShoppingCartController()
-        {
-            db = new ProductDbContext();
-            session = new SessionManager();
-            service = new ContextServices();
-            shoppingService = new ShoppingCartServices();
-        }
+       
 
-        public ShoppingCartController(IProductDbContext db, ISessionManager session, IShoppingCartServices shoppingService, IContextServices service)
-        {
-            this.db = db;
-            this.session = session;
-            this.service = service;
-            this.shoppingService = shoppingService;
+        public ShoppingCartController(IShoppingCartServices shoppingService)
+        {           
+            this.shoppingService = shoppingService;          
         }
 
         [HttpGet]
@@ -140,10 +130,6 @@ namespace Sklep_internetowy.Controllers
             return shoppingService.GetCountOfShoppingCartPositions();
         }
 
-        [ChildActionOnly]
-        public ActionResult MainCategoriesMenu()
-        {
-            return PartialView("_MainCategoriesMenu", service.GetAllMainCategories());
-        }
+        
     }
 }

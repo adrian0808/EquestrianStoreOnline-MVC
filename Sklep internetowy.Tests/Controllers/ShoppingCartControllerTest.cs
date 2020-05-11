@@ -16,20 +16,15 @@ namespace Sklep_internetowy.Tests.Controllers
 {
     public class ShoppingCartControllerTest
     {
-        private Mock<IProductDbContext> db;
-        private Mock<IContextServices> service;
-        private Mock<ISessionManager> session;
+        
         private Mock<IShoppingCartServices> shoppingService;
         private ShoppingCartController controller;
 
         [SetUp]
         public void SetUp()
-        {
-            db = new Mock<IProductDbContext>();
-            service = new Mock<IContextServices>();
-            session = new Mock<ISessionManager>();
+        {                    
             shoppingService = new Mock<IShoppingCartServices>();
-            controller = new ShoppingCartController(db.Object, session.Object, shoppingService.Object, service.Object);
+            controller = new ShoppingCartController(shoppingService.Object);
         }
 
         [Test]
@@ -199,33 +194,6 @@ namespace Sklep_internetowy.Tests.Controllers
             Assert.IsInstanceOf<int>(result);
         }
 
-        [Test]
-        public void MainCategoriesMenu_Should_CallGetAllMainCategoriesOnlyOnce()
-        {
-            //Arrange
-            //SetUp
-
-            //Act
-            var result = controller.MainCategoriesMenu();
-
-            //Assert
-            service.Verify(v => v.GetAllMainCategories(), Times.Once);
-        }
-
-        [Test]
-        public void MainCategoriesMenu_Should_ReturnPartialView()
-        {
-            //Arrange
-            //SetUp
-
-            //Act
-            var result = controller.MainCategoriesMenu();
-
-            //Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<PartialViewResult>(result);
-        }
-
-
+       
     }
 }
