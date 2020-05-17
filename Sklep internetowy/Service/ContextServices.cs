@@ -139,17 +139,17 @@ namespace Sklep_internetowy.DAL
 
         public SelectList GetSizesForGivenProduct(int idProduct)
         {
-            return new SelectList(db.ProductsVariant.Where(p => p.ProductId == idProduct).Select(p => p.Size), "SizeId", "size");
+            return new SelectList(db.ProductsVariant.Where(p => p.ProductId == idProduct).GroupBy(s => s.Size).Select(p => p.Key), "SizeId", "size");
         }
 
         public SelectList GetColorsForGivenProduct(int idProduct)
         {
-            return new SelectList(db.ProductsVariant.Where(p => p.ProductId == idProduct).Select(p => p.Color), "ColorId", "color");
+            return new SelectList(db.ProductsVariant.Where(p => p.ProductId == idProduct).GroupBy(p => p.Color).Select(p => p.Key), "ColorId", "color");
         }
 
         public SelectList GetColorsForGivenSize(int sizeId, int productId)
         {
-            return new SelectList(db.ProductsVariant.Where(p => p.SizeId == sizeId && p.Product.ProductId == productId).Select(c => c.Color), "ColorId", "color");
+            return new SelectList(db.ProductsVariant.Where(p => p.SizeId == sizeId && p.Product.ProductId == productId).GroupBy(c => c.Color).Select(p => p.Key), "ColorId", "color");
         }
 
 

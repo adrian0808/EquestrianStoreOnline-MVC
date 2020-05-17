@@ -29,6 +29,7 @@ namespace Sklep_internetowy
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
 
+       
         public static ProductDbContext Create()
         {
             return new ProductDbContext();

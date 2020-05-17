@@ -38,6 +38,12 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="@Url.Action("OrdersHistory", "Manage")">Historia zamówień<span class="sr-only">(current)</span></a>
                     </li>
+                    @if (@User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" href="@Url.Action("AddProduct", "Manage")">Dodaj<span class="sr-only">(current)</span></a>
+                        </li>
+                    }
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     @Html.Partial("_LoginPartial")

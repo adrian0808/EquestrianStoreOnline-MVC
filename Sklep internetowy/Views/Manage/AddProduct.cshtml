@@ -1,0 +1,87 @@
+﻿@model Sklep_internetowy.ViewModels.EditProductViewModel
+
+@{
+    ViewBag.Title = "AddProduct";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/login.css" />
+</head>
+
+
+
+<!-- Page Content -->
+<div class="container">
+
+    @if (Model.Confirm.HasValue && Model.Confirm.Value)
+    {
+        <div>
+            Pomyślnie wprowadzono zmiany
+        </div>
+    }
+    @using (@Html.BeginForm("AddProduct", "Manage", FormMethod.Post))
+    {
+
+        <div class="panel panel-success" style="margin-top:60px;">
+            @if (ViewBag.EditModel == true)
+            {
+                <div class="panel-heading text-center"><h4>Edytuj produkt</h4></div>
+            }
+            else
+            {
+                <div class="panel-heading text-center"><h4>Dodaj produkt</h4></div>
+                }
+
+        <div class="panel-body">
+
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary()
+
+            <div class="form-group position-relative">
+                <label>Produkt: </label>
+                @Html.DropDownListFor(o => o.ProductVariant.ProductId, new SelectList(Model.Product, "ProductId", "Name", Model.Product.First().ProductId))
+            </div>
+
+            <div class="form-group position-relative">
+                <label>Rozmiar: </label>
+                @Html.DropDownListFor(o => o.ProductVariant.SizeId, new SelectList(Model.Size, "SizeId", "size", Model.Size.First().SizeId))
+            </div>
+
+            <div class="form-group position-relative">
+                <label>Kolor: </label>
+                @Html.DropDownListFor(o => o.ProductVariant.ColorId, new SelectList(Model.Color, "ColorId", "color", Model.Color.First().ColorId))
+            </div>
+
+
+            <div class="text-center">
+                <input class="btn btn-success" type="submit" value="Dodaj produkt" />
+            </div>
+
+        </div>
+        </div>
+    }
+
+
+    <!-- /.col-lg-9 -->
+
+</div>
+<!-- /.row -->
+
+
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}
+
+
+
+
+

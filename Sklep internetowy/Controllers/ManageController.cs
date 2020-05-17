@@ -20,10 +20,10 @@ namespace Sklep_internetowy.Controllers
     [Authorize]
     public class ManageController : Controller
     {
-        private ProductDbContext db;
+        private IProductDbContext db;
         private IContextServices service;
 
-        public ManageController(ProductDbContext db, IContextServices service)
+        public ManageController(IProductDbContext db, IContextServices service)
         {
             this.db = db;
             this.service = service;
@@ -184,7 +184,8 @@ namespace Sklep_internetowy.Controllers
         }
 
         [HttpPost]
-        public StateOfOrder ChangeStateOfOrder(int orderId, StateOfOrder enumState)
+        [Authorize(Roles = "Admin")]
+        public ActionResult ChangeStateOfOrder(int orderId, StateOfOrder enumState)
         {
             Order updateOrder = db.Orders.Find(orderId);
             if (enumState == StateOfOrder.Completed)
@@ -196,9 +197,48 @@ namespace Sklep_internetowy.Controllers
                 updateOrder.StateOfOrder = StateOfOrder.Completed;
             }
 
-            db.SaveChanges();
-            return updateOrder.StateOfOrder;
+            db.SaveChangesWrapped();
+            return RedirectToAction("OrdersHistory");
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult AddProduct(int? productVariantId, bool? confirm)
+        {
+            ProductVariant productVariant;
+
+            if (productVariantId.HasValue)
+            {
+                ViewBag.EditMode = true;
+                productVariant = db.ProductsVariant.Find(productVariantId);
+            }
+            else
+            {
+                ViewBag.EditMode = false;
+                productVariant = new ProductVariant();
+            }
+
+            var result = new EditProductViewModel();
+            result.Product = db.Products.ToList();
+            result.Size = db.Sizes.ToList();
+            result.Color = db.Colors.ToList();
+            result.ProductVariant = productVariant;
+            result.Confirm = confirm;
+           
+            return View(result);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult AddProduct(EditProductViewModel model)
+        {
+            db.ProductsVariant.Add(model.ProductVariant);
+            db.SaveChangesWrapped();
+            return RedirectToAction("AddProduct", new { confirm = true });
+        }
+
+
+
 
 
     }

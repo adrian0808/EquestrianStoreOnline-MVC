@@ -53,11 +53,14 @@
                                                     @if (ViewBag.isAdmin == true)
                                                     {
 
-                                                        using (Html.BeginForm("ChangeStateOfOrder", "Manage", new { orderId = i.OrderId, enumState = i.StateOfOrder}, FormMethod.Post))
+                                                        using (Html.BeginForm("ChangeStateOfOrder", "Manage", new { orderId = i.OrderId, enumState = i.StateOfOrder }, FormMethod.Post))
                                                         {
                                                             @Html.HiddenFor(o => i.OrderId)
-                                                            @Html.EnumDropDownListFor(enumState => i.StateOfOrder, new { @class = "form-control ChangeState" })
-                                                            
+                                                            @Html.EnumDropDownListFor(enumState => i.StateOfOrder, new { @class = "ChangeState form-control" })
+                                                            <div class="text-center">
+                                                                <input class="btn btn-success" type="submit" value="Modyfikuj status" />
+                                                            </div>
+
                                                         }
 
                                                     }
@@ -125,12 +128,13 @@
 {
     <script src="~/Scripts/jquery-3.4.1.js"></script>
     <script>
-    $(".ChangeState").on('change', function (e) {      
-        var f = $(this.form);    
-        var action = f.attr("action");
-        var serializedForm = f.serialize();
-        $.post(action, serializedForm).done(function (data) {          
-          });
-    });
+        $(".ChangeState").on('change', function (e) {
+            var f = $(this.form);
+            var action = f.attr("action");
+            var serializedForm = f.serialize();
+            $.post(action, serializedForm).done(function (data) {
+            });
+        });
     </script>
+
 }
