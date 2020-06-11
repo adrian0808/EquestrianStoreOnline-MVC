@@ -39,7 +39,7 @@ namespace Sklep_internetowy.DAL
             }
             else
             {
-                news = db.Products.OrderByDescending(p => p.AddingDate).Take(3).ToList();
+                news = db.Products.Where(a => a.isAvaliable == true).OrderByDescending(p => p.AddingDate).Take(3).ToList();
                 cache.Set(Consts.NewsCacheKey, news, 1);
             }
 
@@ -51,7 +51,7 @@ namespace Sklep_internetowy.DAL
             }
             else
             {
-                bestsellers = db.Products.Where(p => p.isBestseller).OrderBy(p => Guid.NewGuid()).Take(3).ToList();
+                bestsellers = db.Products.Where(p => p.isBestseller == true && p.isAvaliable == true).OrderBy(p => Guid.NewGuid()).Take(3).ToList();
                 cache.Set(Consts.BestsellerCacheKey, bestsellers, 60);
             }
 
@@ -81,12 +81,12 @@ namespace Sklep_internetowy.DAL
 
             if (!String.IsNullOrEmpty(searchTerm))
             {
-                Products = db.Products.Where(p => p.Name.ToLower().Contains(searchTerm.ToLower()) || p.Brand.brand.ToLower().Contains(searchTerm.ToLower()) && p.Category.MainCategoryId == idMainCategory).ToList();
+                Products = db.Products.Where(p => p.Name.ToLower().Contains(searchTerm.ToLower()) || p.Brand.brand.ToLower().Contains(searchTerm.ToLower()) && p.Category.MainCategoryId == idMainCategory && p.isAvaliable == true).ToList();
                 return Products;
             }
             else
             {
-                Products = db.Products.Where(p => p.Category.MainCategoryId == idMainCategory).ToList();
+                Products = db.Products.Where(p => p.Category.MainCategoryId == idMainCategory && p.isAvaliable == true).ToList();
                 return Products;
             }
         }
@@ -97,12 +97,12 @@ namespace Sklep_internetowy.DAL
 
             if (!String.IsNullOrEmpty(searchTerm))
             {
-                Products = db.Products.Where(p => p.CategoryId == idCategory && (p.Name.ToLower().Contains(searchTerm.ToLower()) || p.Brand.brand.ToLower().Contains(searchTerm.ToLower()))).ToList();
+                Products = db.Products.Where(p => p.isAvaliable == true && p.CategoryId == idCategory && (p.Name.ToLower().Contains(searchTerm.ToLower()) || p.Brand.brand.ToLower().Contains(searchTerm.ToLower()))).ToList();
                 return Products;
             }
             else
             {
-                Products = db.Products.Where(p => p.CategoryId == idCategory).ToList();
+                Products = db.Products.Where(p => p.CategoryId == idCategory && p.isAvaliable == true).ToList();
                 return Products;
             }
 
@@ -110,12 +110,12 @@ namespace Sklep_internetowy.DAL
 
         public List<Product> GetProductsWhichAreBestsellers()
         {
-            return db.Products.Where(p => p.isBestseller == true).ToList();
+            return db.Products.Where(p => p.isBestseller == true && p.isAvaliable == true).ToList();
         }
 
         public List<Product> GetProductsWhichAreNew()
         {
-            return db.Products.Where(p => (clock.Now.Month - p.AddingDate.Month) == 0 || (p.AddingDate.Day > clock.Now.Day && (clock.Now.Month - p.AddingDate.Month) == 1)).ToList();
+            return db.Products.Where(p => p.isAvaliable == true && (clock.Now.Month - p.AddingDate.Month) == 0 || (p.AddingDate.Day > clock.Now.Day && (clock.Now.Month - p.AddingDate.Month) == 1)).ToList();
         }
 
         public List<Category> GetCategoriesForGivenMainCategory(int idMainCategory)

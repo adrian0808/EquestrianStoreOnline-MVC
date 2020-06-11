@@ -18,7 +18,7 @@ namespace Sklep_internetowy
 
         static ProductDbContext()
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProductDbContext, Sklep_internetowy.Migrations.Configuration>());
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<ProductDbContext, Sklep_internetowy.Migrations.Configuration>());
         }
 
 

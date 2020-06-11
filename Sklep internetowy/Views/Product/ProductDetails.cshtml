@@ -99,7 +99,10 @@
                         </div>
                         <br />
                         <h7>Opis: @Model.Product.Description</h7>
-
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                           <a href="@Url.Action("AddNewProduct", "Manage", new { productId = Model.Product.ProductId})" style="margin-top:20px; font-weight:bold; display:block;">Edytuj</a>
+                        }
 
                     </div>
                 </div>

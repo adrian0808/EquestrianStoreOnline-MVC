@@ -4,12 +4,14 @@ using Microsoft.Owin.Security;
 using Sklep_internetowy.App_Start;
 using Sklep_internetowy.DAL;
 using Sklep_internetowy.DAL.Interfaces;
+using Sklep_internetowy.Infrastructure;
 using Sklep_internetowy.Models;
 using Sklep_internetowy.Service.Interfaces;
 using Sklep_internetowy.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -224,7 +226,7 @@ namespace Sklep_internetowy.Controllers
             result.Color = db.Colors.ToList();
             result.ProductVariant = productVariant;
             result.Confirm = confirm;
-           
+
             return View(result);
         }
 
@@ -235,6 +237,98 @@ namespace Sklep_internetowy.Controllers
             db.ProductsVariant.Add(model.ProductVariant);
             db.SaveChangesWrapped();
             return RedirectToAction("AddProduct", new { confirm = true });
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult AddNewProduct(int? productId, bool? confirm)
+        {
+            Product product;
+
+            if (productId.HasValue)
+            {
+                ViewBag.EditModel = true;
+                product = db.Products.Find(productId);
+            }
+            else
+            {
+                ViewBag.EditModel = false;
+                product = new Product();
+            }
+
+            var result = new EditProductNewViewModel();
+            result.Product = product;
+            result.Category = db.Categories.ToList();
+            result.Brand = db.Brands.ToList();
+            result.Gender = db.Genders.ToList();
+            result.Confirm = confirm;
+
+            return View(result);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult AddNewProduct(EditProductNewViewModel model, HttpPostedFileBase file)
+        {
+            if (model.Product.ProductId > 0)
+            {
+                Product product = db.Products.Find(model.Product.ProductId);
+                product.Name = model.Product.Name;
+                product.Description = model.Product.Description;
+                product.Price = model.Product.Price;
+                product.isBestseller = model.Product.isBestseller;
+                product.isAvaliable = model.Product.isAvaliable;
+                product.isSize = model.Product.isSize;
+                product.isColor = model.Product.isColor;
+                product.CategoryId = model.Product.CategoryId;
+                product.BrandId = model.Product.BrandId;
+                product.GenderId = model.Product.GenderId;
+
+                db.SaveChangesWrapped();
+                return RedirectToAction("AddNewProduct", new { confirm = true });
+            }
+            else
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        var fileExt = Path.GetExtension(file.FileName);
+                        var filename = Guid.NewGuid() + fileExt;
+
+                        var path = Path.Combine(Server.MapPath(AppConfig.GetGraphicFileRelativePath), filename);
+                        file.SaveAs(path);
+
+                        model.Product.GraphicFileName = filename;
+                        model.Product.AddingDate = DateTime.Now;
+
+                        db.Products.Add(model.Product);
+                        db.SaveChangesWrapped();
+                        return RedirectToAction("AddProduct", new { confirm = true });
+                    }
+                    else
+                    {
+                        var categories = db.Categories.ToList();
+                        var genders = db.Genders.ToList();
+                        var brands = db.Brands.ToList();
+                        model.Category = categories;
+                        model.Brand = brands;
+                        model.Gender = genders;
+                        return View(model);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Nie wskazano pliku!");
+                    var categories = db.Categories.ToList();
+                    var genders = db.Genders.ToList();
+                    var brands = db.Brands.ToList();
+                    model.Category = categories;
+                    model.Brand = brands;
+                    model.Gender = genders;
+                    return View(model);
+                }
+            }
         }
 
 

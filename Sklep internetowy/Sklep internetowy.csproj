@@ -325,9 +325,9 @@
     <Compile Include="DAL\SystemClock.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Infrastructure\NinjectResolver.cs" />
-    <Compile Include="Migrations\202004270952392_init.cs" />
-    <Compile Include="Migrations\202004270952392_init.designer.cs">
-      <DependentUpon>202004270952392_init.cs</DependentUpon>
+    <Compile Include="Migrations\202005191037079_init.cs" />
+    <Compile Include="Migrations\202005191037079_init.designer.cs">
+      <DependentUpon>202005191037079_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\OptionalAttributes.cs" />
@@ -366,6 +366,7 @@
     <Compile Include="Service\ShoppingCartServices.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
+    <Compile Include="ViewModels\EditProductNewViewModel.cs" />
     <Compile Include="ViewModels\EditProductViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModel.cs" />
@@ -615,14 +616,10 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Manage\AddProduct.cshtml" />
+    <Content Include="Views\Manage\AddNewProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202004270952392_init.resx">
-      <DependentUpon>202004270952392_init.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -634,6 +631,11 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202005191037079_init.resx">
+      <DependentUpon>202005191037079_init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

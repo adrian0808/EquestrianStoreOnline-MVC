@@ -1,0 +1,137 @@
+﻿@model Sklep_internetowy.ViewModels.EditProductNewViewModel
+
+@{
+    ViewBag.Title = "AddNewProduct";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/login.css" />
+</head>
+
+
+
+<!-- Page Content -->
+<div class="container">
+
+    @if (Model.Confirm.HasValue && Model.Confirm.Value)
+    {
+        <div>
+            Pomyślnie wprowadzono zmiany
+        </div>
+    }
+    @using (@Html.BeginForm("AddNewProduct", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <div class="panel panel-success" style="margin-top:60px;">
+            @if (ViewBag.EditModel == true)
+            {
+                <div class="panel-heading text-center"><h4>Edytuj produkt</h4></div>
+            }
+            else
+            {
+                <div class="panel-heading text-center"><h4>Dodaj produkt</h4></div>
+            }
+
+            <div class="panel-body">
+
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary()
+
+                @Html.HiddenFor(o => o.Product.ProductId)
+                @Html.HiddenFor(o => o.Product.AddingDate)
+                @Html.HiddenFor(o => o.Product.GraphicFileName)
+
+                <div class="form-group position-relative">
+                    <label>Nazwa: </label>
+                    @Html.TextBoxFor(o => o.Product.Name, new { @class = "form-control" })
+                    <span class="position-absolute" style="top: 70px; left:0px; font-size:12px; color:red;">@Html.ValidationMessageFor(o => o.Product.Name)</span>
+                </div>
+
+                <div class="form-group position-relative">
+                    <label>Opis: </label>
+                    @Html.TextBoxFor(o => o.Product.Description, new { @class = "form-control" })
+                    <span class="position-absolute" style="top: 70px; left:0px; font-size:12px; color:red;">@Html.ValidationMessageFor(o => o.Product.Description)</span>
+                </div>
+
+                <div class="form-group position-relative">
+                    <label>Cena: </label>
+                    @Html.TextBoxFor(o => o.Product.Price, new { @class = "form-control" })
+                    <span class="position-absolute" style="top: 70px; left:0px; font-size:12px; color:red;">@Html.ValidationMessageFor(o => o.Product.Price)</span>
+                </div>
+
+                <div class="form-group position-relative">
+                    <label>Bestseller: </label>
+                    @Html.CheckBoxFor(o => o.Product.isBestseller, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group position-relative">
+                    <label>Rozmiar: </label>
+                    @Html.CheckBoxFor(o => o.Product.isSize, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group position-relative">
+                    <label>Kolor: </label>
+                    @Html.CheckBoxFor(o => o.Product.isColor, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group position-relative">
+                    <label>Dostępny: </label>
+                    @Html.CheckBoxFor(o => o.Product.isAvaliable, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group position-relative">
+                    <label>Kategoria: </label>
+                    @Html.DropDownListFor(o => o.Product.CategoryId, new SelectList(Model.Category, "CategoryId", "Name", Model.Category.First().CategoryId))
+                </div>
+
+                <div class="form-group position-relative">
+                    <label>Marka: </label>
+                    @Html.DropDownListFor(o => o.Product.BrandId, new SelectList(Model.Brand, "BrandId", "brand", Model.Brand.First().BrandId))
+                </div>
+
+                <div class="form-group position-relative">
+                    <label>Gender: </label>
+                    @Html.DropDownListFor(o => o.Product.GenderId, new SelectList(Model.Gender, "GenderId", "Name", Model.Gender.First().GenderId))
+                </div>
+
+                @if (ViewBag.EditMode == null || !ViewBag.EditMode)
+                {
+                    <div class="upload">
+                        <input type="file" name="file" />
+                    </div>
+                }
+
+                <div class="text-center">
+                    <input class="btn btn-success" type="submit" value="Dodaj produkt" />
+                </div>
+
+            </div>
+        </div>
+    }
+
+
+    <!-- /.col-lg-9 -->
+
+</div>
+<!-- /.row -->
+
+
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}
+
+
+
+
+
+
+
