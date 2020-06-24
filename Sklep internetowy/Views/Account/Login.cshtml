@@ -48,7 +48,7 @@
                             @Html.CheckBoxFor(o => o.RememberMe, new { @checked = "checked" })
                         </div>
                         <div class="text-center">
-                            <input class="btn btn-success" type="submit" value="Zaloguj się" />
+                            <input class="btn btn-success" type="submit" id="loginButton" value="Zaloguj się" />
                         </div>
                         <div id="register-link" class="text-center" style="margin-top:25px;">
                             Nie masz jeszcze konta? Nic straconego! <a href="@Url.Action("Register", "Account")" class="text-info">Zarejestruj się</a>
