@@ -5,7 +5,7 @@ Equestrian online shopping store based on ASP.NET MVC
 * [General info](#general-info)
 * [Main technologies](#technologies)
 * [Screenshots](#screenshots)
-
+* [Features](#features)
 
 ## General info
 Equestrian online store application that allows to, among others, browse the store’s offer, create a user account and place an order. The purpose of the project is to learn ASP.NET platform and architectural pattern - MVC.
@@ -43,3 +43,16 @@ Equestrian online store application that allows to, among others, browse the sto
 ![History of orders admin page](./imgReadme/adminHistoryOrder.png)
 * Add new product from admin account
 ![Add new product from admin account](./imgReadme/addProduct.png)
+
+
+## Features
+List of features ready:
+* browsing the store's offer
+* account registration
+* account login
+* adding/removing products to/from shopping cart
+* place an order
+* user account management 
+* browsing history of orders
+* browsing history orders of all users and setting order status by admin
+* adding new products by admin
