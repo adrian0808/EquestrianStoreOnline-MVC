@@ -19,6 +19,27 @@ Equestrian online store application that allows to, among others, browse the sto
 * SQL Server
 
 ## Screenshots
+* Main page
 ![Main page](./imgReadme/mainPage.png)
-
-
+* Main category page
+![Main category page](./imgReadme/mainCategoryPage.png)
+* Category page
+![Category page](./imgReadme/categoryPage.png)
+* Product details page
+![Product details page](./imgReadme/productDetailsPage.png)
+* Register page
+![Register page](./imgReadme/register.png)
+* Login page
+![Login page](./imgReadme/login.png)
+* Shopping cart page
+![Shopping cart page](./imgReadme/shoppingCart.png)
+* Pay order page
+![Pay order page](./imgReadme/dataOrder.png)
+* Account manage page
+![Account manage page](./imgReadme/accountManage.png)
+* History of orders page
+![History of orders page](./imgReadme/orderHistory.png)
+* History of orders admin page
+![History of orders admin page](./imgReadme/adminHistoryOrder.png)
+* Add new product from admin account
+![Add new product from admin account](./imgReadme/addProduct.png)
