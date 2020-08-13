@@ -1,1 +1,2 @@
-Kolor: czerwony
+Kolor: Niebieski, Czerwony
+
