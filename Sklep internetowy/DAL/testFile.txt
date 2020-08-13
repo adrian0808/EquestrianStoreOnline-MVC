@@ -1,5 +1,6 @@
 Kolor: Niebieski, Czarny
 Plec: Kobieta
+Kolor oczu: Piwny
 Jêzyk: angielski
 Telefon: 654 234 128
 Samochod: Mazda 6
